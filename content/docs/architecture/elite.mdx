@@ -1,27 +1,58 @@
 ---
 title: Elite Agent System
-description: Per-user AI agent architecture on Fly Machines.
+description: Per-user AI agent architecture — one Fly Machine per user.
 ---
 
 ## Elite Agent System
 
-Every BlockMind user gets a dedicated AI agent running on its own Fly Machine. The agent runs an OpenClaw gateway with a personalized configuration.
+Every BlockMind user gets a dedicated AI agent running on its own Fly Machine. Complete isolation — no multi-tenancy.
 
 <D2Diagram name="EliteContainers" title="Elite — Container View" />
 
-### Components
+### Containers
 
 | Container | Technology | Purpose |
 |-----------|-----------|---------|
-| OpenClaw Gateway | TypeScript / OpenClaw | Agent runtime — handles tool calls, memory, conversation |
-| Agent Config | YAML/JSON | Skills, tools, persona definition per user |
-| Event Relay | TypeScript | SSE bridge: streams agent events to platform via Electric SQL |
-| Browser Tool | TypeScript | Browserbase integration for web browsing |
-| Agent File System | Fly Volume | Persistent storage per agent |
+| **OpenClaw Gateway** | TypeScript / OpenClaw | Full agent runtime: LLM orchestration, tool system, memory, conversation management |
+| **Agent Config** | JSON / Markdown | `openclaw.json` + `SOUL.md` + `IDENTITY.md` + `skills/` |
+| **Event Relay** | TypeScript (Node.js script) | Bridges OpenClaw SSE → platform ingest endpoint via HTTP POST |
+| **Browser Tool** | TypeScript / Browserbase | Cloud browser sessions — not headless Chrome on the machine |
+| **Agent File System** | Fly Volume | Persistent storage: `workspace/`, `memory/`, `skills/`, `artifacts/` |
+
+### OpenClaw Gateway Components
+
+| Component | Purpose |
+|-----------|---------|
+| **Conversation Engine** | Multi-session chat with context management |
+| **Tool System** | Extensible tool calls: browse, search, chart, research, code execution |
+| **Memory System** | `MEMORY.md` + `memory/*.md` — persistent semantic recall across sessions |
+| **Skill Loader** | Dynamic skill loading from workspace files |
+
+### Agent Config Files
+
+| File | Purpose |
+|------|---------|
+| `openclaw.json` | Model, tools (with deny list), channels, skills, compaction settings |
+| `SOUL.md` | Persona definition, tone, behavioral rules |
+| `IDENTITY.md` | Agent name, user context, plan tier |
+| `skills/` | Platform-managed skills: dashboard, research, morning-brief, KOL analysis |
+
+### Event Relay Architecture
+
+The relay is a Node.js script executed on the Fly Machine via the exec API. It:
+
+1. **Consumes** the OpenClaw gateway's SSE stream
+2. **Transforms** raw OpenClaw events into typed durable stream events (assistant-token, assistant-complete, tool-use, browser-event, etc.)
+3. **POSTs** each event to the platform's `/api/agent/events` ingest endpoint
+4. **Emits heartbeats** for run liveness tracking
+
+This design means the agent machine doesn't need direct Electric SQL access — events flow through the platform API.
 
 ### Key Design Decisions
 
 - **One machine per user** — No multi-tenancy. Complete isolation for security and reliability.
+- **Suspend/resume** — Idle machines auto-suspend. Resume in ~200ms when user sends a message.
 - **OpenClaw as runtime** — Provides tool system, memory, conversation management out of the box.
-- **SSE via Electric SQL Durable Streams** — Real-time event streaming from agent to platform UI.
+- **Relay bridge** — Agent doesn't write to Electric SQL directly. Events go through platform ingest.
 - **Browserbase for browsing** — Cloud browser sessions, not headless Chrome on the machine.
+- **Browser tool denial** — Agent must use `elite-tools browse`, not OpenClaw native `browser`. Relay only understands elite-tools format.

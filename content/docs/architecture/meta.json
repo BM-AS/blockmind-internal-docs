@@ -1,4 +1,4 @@
 {
   "title": "Architecture",
-  "pages": ["index", "elite", "platform"]
+  "pages": ["index", "platform", "elite", "infra", "chat-flow", "provisioning-flow", "credit-flow"]
 }

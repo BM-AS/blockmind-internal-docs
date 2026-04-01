@@ -1,0 +1,62 @@
+---
+title: Provisioning Flow
+description: How a new Elite agent is provisioned — from user input to running machine.
+---
+
+## Provisioning Flow
+
+When a user creates an Elite agent, an Inngest durable workflow orchestrates 8 steps to bring the machine online.
+
+<D2Diagram name="ProvisioningFlow" title="Provisioning Workflow Steps" />
+
+### Steps
+
+| # | Step | Time | What Happens |
+|---|------|------|-------------|
+| 1 | **Create Workspace Record** | ~50ms | DB insert: workspace + org binding, initial status = `provisioning` |
+| 2 | **Claim Pool Machine** | ~200ms (pool) / ~30s (fresh) | Claims pre-warmed Fly Machine from pool, or creates fresh app + volume + machine |
+| 3 | **Generate Keys** | ~100ms | Creates API key + gateway auth token, stores encrypted in DB, sets Fly app secrets |
+| 4 | **Activate Workspace** | ~2s | Seeds config files on machine (openclaw.json, skills, templates), marks workspace active |
+| 5 | **Identity Sync** | ~1s | Writes `IDENTITY.md` + `SOUL.md` with user-specific data (name, email, org) |
+| 6 | **Wake Schedules** | ~50ms | Creates Inngest cron functions: morning brief, daily pipeline |
+| 7 | **AgentMail Pod** | ~500ms | Provisions per-agent email address via AgentMail |
+| 8 | **Finalize** | ~50ms | Restores autostop settings, status → `active` |
+
+### Compensation (Failure Handling)
+
+If any step fails, the workflow runs compensation steps:
+
+- **Key compensation** — Deactivates provisioned API keys
+- **Fly cleanup** — Destroys Fly app + machine if created
+- **Status update** — Marks workspace as `failed`
+- **Pool return** — Returns claimed machine to pool if personalization failed
+
+### Machine Autostop Behavior
+
+During provisioning, autostop is disabled (`off`) to prevent the machine from suspending before setup completes. After finalization:
+
+- **Normal mode:** `suspend` — machine auto-suspends when idle, resumes in ~200ms
+- **Min machines:** `0` — no minimum, all machines can suspend
+
+### File Seeding
+
+The activation step writes these files to the machine:
+
+```
+/data/workspace/
+├── openclaw.json          # Agent configuration
+├── SOUL.md                # Persona definition
+├── IDENTITY.md            # User-specific identity
+├── USER.md                # User context
+├── skills/
+│   ├── dashboard/SKILL.md # Dashboard control skill
+│   ├── research/SKILL.md  # Research skill
+│   ├── morning-brief/SKILL.md
+│   └── kol-analysis/SKILL.md
+└── memory/
+    └── MEMORY.md          # Initial memory
+```
+
+### Known Issue: Template Sync on First Boot
+
+`writeChunkedAbsoluteFile` can fail if the machine is in `replacing` state during `ensureEliteWorkspaceReady`. The error is caught and swallowed, so the agent boots without some skills despite `tutorial.status: "pending"` in DB. Fix: retry template sync or make it fatal on first boot.

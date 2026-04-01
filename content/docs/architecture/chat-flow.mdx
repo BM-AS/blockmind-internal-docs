@@ -1,0 +1,61 @@
+---
+title: Chat Message Flow
+description: How a user message travels from the browser to the agent and back, via durable streams.
+---
+
+## Chat Message Flow
+
+This is the most important flow in the system. A user message travels through 13 steps before the response appears in the UI.
+
+<D2Diagram name="ChatFlow" title="Chat Message Flow — End to End" />
+
+### Step-by-Step
+
+| Step | Component | Action |
+|------|-----------|--------|
+| 1 | **User** | Types message in chat UI |
+| 2 | **Elite Chat UI** | Calls `chat.send()` via oRPC |
+| 3 | **Elite Router** | Checks credit balance, validates session |
+| 4 | **Elite Router** | Executes command on Fly Machine via exec API |
+| 5 | **Fly Exec** | Delivers message to OpenClaw gateway |
+| 6 | **OpenClaw Gateway** | Streams completion from LLM (Claude/GPT) |
+| 7 | **Gateway → Relay** | Emits SSE events to the relay script |
+| 8 | **Event Relay** | POSTs typed events to platform `/api/agent/events` |
+| 9 | **Ingest Endpoint** | Appends events to durable stream |
+| 10 | **Durable Stream** | Persisted in Electric SQL |
+| 11 | **Electric SQL** | Pushes events via SSE to client |
+| 12 | **SSE Transport** | Routes events into typed collections |
+| 13 | **Elite Chat UI** | Renders streaming tokens |
+
+### Key Design Properties
+
+- **No direct WebSocket** between browser and agent. All events flow through the platform API + Electric SQL.
+- **Durable by default** — Events are persisted in Electric SQL. Page refresh replays from last offset.
+- **Credit check is pre-flight** — Balance verified before the agent runs, not after.
+- **Relay is per-run** — A new relay process is launched for each chat run, with a unique `runId`.
+- **Heartbeats** — Relay emits periodic heartbeat events so the UI knows the run is alive.
+
+### Event Types
+
+Events emitted during a chat run:
+
+| Event Type | When |
+|------------|------|
+| `run.accepted` | Platform accepts the run request |
+| `run.started` | Relay connects to gateway |
+| `user-message` | User message recorded |
+| `assistant-token` | Streaming token from LLM |
+| `assistant-complete` | Full response assembled |
+| `assistant-chart` | Chart data extracted from response |
+| `tool-use` | Agent invokes a tool (browse, search, etc.) |
+| `tool-result-pending` | Tool running, artifact expected |
+| `tool-result-ready` | Tool completed, artifact available |
+| `tool-result-failed` | Tool failed |
+| `browser-event` | Browser session start/action/end |
+| `research-activity` | Research progress update |
+| `run.heartbeat` | Liveness ping |
+| `error` | Error from agent or relay |
+
+### Known Issue: SSE Truncation
+
+The durable stream live subscription can miss the last event when it arrives close to `upToDate: true`. This means `assistant-complete` sometimes never reaches the client (19/20 events delivered, completion dropped). PR #768 implements a stale replay fallback that resets offset to `-1` on idle.

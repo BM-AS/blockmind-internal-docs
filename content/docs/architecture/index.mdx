@@ -5,7 +5,11 @@ description: High-level overview of all BlockMind systems and their relationship
 
 ## BlockMind System Landscape
 
-The BlockMind platform consists of three primary systems: the Platform (web application), the Elite Agent System (per-user AI agents), and the Agent Infrastructure (provisioning and lifecycle management).
+BlockMind consists of three primary systems:
+
+- **BlockMind Platform** — TanStack Start web app on Vercel. Portfolio tracking, chat UI, real-time data sync.
+- **Elite Agent System** — One Fly Machine per user running an OpenClaw gateway. Per-user AI with persistent memory, tools, and browser access.
+- **Agent Infrastructure** — Inngest-driven provisioning, template distribution, machine pooling, health monitoring.
 
 <D2Diagram name="SystemLandscape" title="System Landscape — All Systems" />
 
@@ -14,14 +18,20 @@ The BlockMind platform consists of three primary systems: the Platform (web appl
 | System | Purpose |
 |--------|---------|
 | PlanetScale | Postgres database (Drizzle ORM) |
-| Fly.io | Agent compute (dedicated Fly Machines per user) |
+| Fly.io | Agent compute — one dedicated machine per user |
 | Vercel | Platform hosting + serverless functions |
 | Inngest | Durable workflow orchestration |
+| Electric SQL | Durable Streams — real-time SSE event transport |
 | Browserbase | Cloud browser sessions for agents |
 | Tigris S3 | Artifact storage (screenshots, files) |
 | Moralis | Blockchain/DeFi data provider |
+| AgentMail | Per-agent email addresses |
 
 ### Drill Down
 
-- [Platform Internals](/docs/architecture/platform) — Web app, API, auth, credits
+- [Platform Internals](/docs/architecture/platform) — Web app, API, auth, credits, durable streams
 - [Elite Agent System](/docs/architecture/elite) — Per-user agent architecture
+- [Agent Infrastructure](/docs/architecture/infra) — Provisioning, templates, machine pool
+- [Chat Flow](/docs/architecture/chat-flow) — How messages travel from user to agent and back
+- [Provisioning Flow](/docs/architecture/provisioning-flow) — How a new agent is created
+- [Credit System](/docs/architecture/credit-flow) — Usage metering and billing

@@ -1,28 +1,53 @@
 ---
 title: Platform
-description: BlockMind web application architecture.
+description: BlockMind web application architecture — containers and their relationships.
 ---
 
 ## Platform Architecture
 
-The BlockMind platform is a TanStack Start application deployed on Vercel.
+The BlockMind platform is a TanStack Start application deployed on Vercel. It handles portfolio tracking, the Elite chat UI, real-time data sync, and the credit system.
 
 <D2Diagram name="PlatformContainers" title="Platform — Container View" />
 
-### Components
+### Containers
 
 | Container | Technology | Purpose |
 |-----------|-----------|---------|
-| Web App | TanStack Start + Vite | SPA with SSR, file-based routing |
-| API Layer | oRPC | Type-safe RPC routes |
-| Auth | Better Auth | Authentication and session management |
-| Database | Drizzle ORM → PlanetScale | Postgres with type-safe schema |
-| Electric SQL | Durable Streams + Postgres Sync | Real-time data sync to client |
-| Credit System | TypeScript | Usage metering and billing |
+| **Web App** | TanStack Start + Vite | SPA with SSR, file-based routing in `src/routes/` |
+| **API Layer** | oRPC | Type-safe RPC routes — Elite chat, workspace management, exchanges, artifacts |
+| **Auth** | Better Auth | Session management, OAuth, role-based access |
+| **Database** | Drizzle ORM → PlanetScale | Postgres: workspaces, users, orgs, chat runs, credits |
+| **Durable Streams Client** | Electric SQL | 8 typed collections for real-time chat events via SSE |
+| **Credit System** | TypeScript | Model tier classification → credit deduction per run |
 
 ### Key Patterns
 
 - **TanStack Router** — File-based routing in `src/routes/`
-- **TanStack DB** — Client-side collections synced via Electric SQL
+- **TanStack DB** — Client-side collections synced via Electric SQL (`ssr: false` mandatory on live query routes)
 - **oRPC** — Type-safe API layer (preferred over tRPC)
-- **Inngest** — All scheduled work (crons, pipelines, provisioning)
+- **Inngest** — All scheduled work: crons, pipelines, provisioning
+- **Durable Streams** — SSE transport for agent chat events (not Postgres Sync — deliberate architecture decision, see [ADR](/docs/decisions/2026-04-01-internal-docs-platform))
+
+### Database Schema (Key Tables)
+
+| Table | Purpose |
+|-------|---------|
+| `workspaces` | Fly app name, machine ID, status, config JSON, encrypted gateway token |
+| `elite_chat_runs` | Run tracking: runId, status, token count, cost |
+| `agent_api_keys` | Encrypted API keys for agent ↔ platform auth |
+| `workspace_events` | Lifecycle events (provisioned, started, failed) |
+| `credit_balances` | Per-org credit balance and usage tracking |
+| `pool_machines` | Pre-warmed Fly Machine IDs for fast provisioning |
+
+### Durable Streams Collections
+
+The platform uses 8 typed collections to route chat events from agent to UI:
+
+1. **messages** — Accumulated chat messages (user + assistant)
+2. **messageEvents** — Raw event stream (user-message, assistant-token, assistant-complete, assistant-chart, error)
+3. **browserEvents** — Browser session start/action/end events
+4. **toolUseEvents** — Tool invocation tracking (browse, search, chart, research)
+5. **toolResultEvents** — Tool result lifecycle (pending → ready/failed)
+6. **researchActivityEvents** — Research activity progress events
+7. **errorEvents** — Error events from agent or relay
+8. **runLifecycleEvents** — Run lifecycle (accepted, started, heartbeat)
