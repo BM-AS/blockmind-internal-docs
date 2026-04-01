@@ -1,0 +1,2813 @@
+{
+  "elements": {
+    "user": {
+      "id": "user",
+      "kind": "person",
+      "name": "User",
+      "description": "BlockMind platform user"
+    },
+    "philip": {
+      "id": "philip",
+      "kind": "person",
+      "name": "Philip",
+      "description": "CTO"
+    },
+    "trym": {
+      "id": "trym",
+      "kind": "person",
+      "name": "Trym",
+      "description": "Full stack dev"
+    },
+    "planetscale": {
+      "id": "planetscale",
+      "kind": "system",
+      "name": "PlanetScale",
+      "description": "Postgres database (Neon-compatible)",
+      "tags": [
+        "external",
+        "database"
+      ]
+    },
+    "fly": {
+      "id": "fly",
+      "kind": "system",
+      "name": "Fly.io",
+      "description": "Agent compute — one Fly Machine per user",
+      "tags": [
+        "external",
+        "infrastructure"
+      ]
+    },
+    "vercel": {
+      "id": "vercel",
+      "kind": "system",
+      "name": "Vercel",
+      "description": "Platform hosting + serverless functions",
+      "tags": [
+        "external",
+        "hosting"
+      ]
+    },
+    "inngest": {
+      "id": "inngest",
+      "kind": "system",
+      "name": "Inngest",
+      "description": "Durable workflow orchestration",
+      "tags": [
+        "external",
+        "workflow"
+      ]
+    },
+    "browserbase": {
+      "id": "browserbase",
+      "kind": "system",
+      "name": "Browserbase",
+      "description": "Cloud browser sessions for agents",
+      "tags": [
+        "external",
+        "browser"
+      ]
+    },
+    "tigris": {
+      "id": "tigris",
+      "kind": "system",
+      "name": "Tigris S3",
+      "description": "Artifact storage (screenshots, files)",
+      "tags": [
+        "external",
+        "storage"
+      ]
+    },
+    "moralis": {
+      "id": "moralis",
+      "kind": "system",
+      "name": "Moralis",
+      "description": "Blockchain data (wallet balances, token prices)",
+      "tags": [
+        "external",
+        "data-source"
+      ]
+    },
+    "electric-cloud": {
+      "id": "electric-cloud",
+      "kind": "system",
+      "name": "Electric SQL",
+      "description": "Durable Streams cloud service",
+      "tags": [
+        "external",
+        "streaming"
+      ]
+    },
+    "agentmail": {
+      "id": "agentmail",
+      "kind": "system",
+      "name": "AgentMail",
+      "description": "Agent email pods",
+      "tags": [
+        "external",
+        "email"
+      ]
+    },
+    "platform": {
+      "id": "platform",
+      "kind": "system",
+      "name": "BlockMind Platform",
+      "description": "DeFi portfolio tracking + AI agents",
+      "docsUrl": "/docs/architecture/platform"
+    },
+    "webapp": {
+      "id": "webapp",
+      "kind": "container",
+      "name": "Web App",
+      "description": "TanStack Start SPA with SSR, file-based routing",
+      "technology": "TypeScript / React"
+    },
+    "elite-dashboard": {
+      "id": "elite-dashboard",
+      "kind": "component",
+      "name": "Elite Dashboard",
+      "description": "Widget-based dashboard with AccountabilityZone + ActivityZone",
+      "technology": "React"
+    },
+    "elite-chat": {
+      "id": "elite-chat",
+      "kind": "component",
+      "name": "Elite Chat",
+      "description": "Real-time chat UI with streaming tokens, charts, browser events",
+      "technology": "React",
+      "docsUrl": "/docs/architecture/chat-flow"
+    },
+    "elite-onboarding": {
+      "id": "elite-onboarding",
+      "kind": "component",
+      "name": "Onboarding Flow",
+      "description": "Boot scene animation + provisioning status",
+      "technology": "React"
+    },
+    "portfolio-views": {
+      "id": "portfolio-views",
+      "kind": "component",
+      "name": "Portfolio Views",
+      "description": "Holdings, performance, analytics pages",
+      "technology": "React"
+    },
+    "strategy-forms": {
+      "id": "strategy-forms",
+      "kind": "component",
+      "name": "Strategy Forms",
+      "description": "Risk profile + allocation preferences",
+      "technology": "React"
+    },
+    "api": {
+      "id": "api",
+      "kind": "container",
+      "name": "API Layer",
+      "description": "Type-safe RPC routes via oRPC",
+      "technology": "TypeScript / oRPC"
+    },
+    "elite-router": {
+      "id": "elite-router",
+      "kind": "component",
+      "name": "Elite Router",
+      "description": "Chat send, session management, stream bootstrap",
+      "technology": "oRPC",
+      "docsUrl": "/docs/architecture/chat-flow"
+    },
+    "workspace-router": {
+      "id": "workspace-router",
+      "kind": "component",
+      "name": "Workspace Router",
+      "description": "Provisioning, status, config endpoints",
+      "technology": "oRPC"
+    },
+    "agent-events-router": {
+      "id": "agent-events-router",
+      "kind": "component",
+      "name": "Agent Events Router",
+      "description": "Ingest endpoint for relay → durable streams",
+      "technology": "oRPC",
+      "docsUrl": "/docs/architecture/chat-flow"
+    },
+    "chart-widget-router": {
+      "id": "chart-widget-router",
+      "kind": "component",
+      "name": "Chart Widget Router",
+      "description": "Chart rendering and TradingView data",
+      "technology": "oRPC"
+    },
+    "exchange-router": {
+      "id": "exchange-router",
+      "kind": "component",
+      "name": "Exchange Router",
+      "description": "Exchange API key management + sync triggers",
+      "technology": "oRPC"
+    },
+    "artifacts-router": {
+      "id": "artifacts-router",
+      "kind": "component",
+      "name": "Artifacts Router",
+      "description": "Browser artifact upload (S3) + DB record",
+      "technology": "oRPC"
+    },
+    "auth": {
+      "id": "auth",
+      "kind": "container",
+      "name": "Auth",
+      "description": "Session management, OAuth, role-based access",
+      "technology": "Better Auth",
+      "docsUrl": "/docs/architecture/auth"
+    },
+    "db": {
+      "id": "db",
+      "kind": "container",
+      "name": "Database",
+      "description": "Drizzle ORM schema: workspaces, users, orgs, chat_runs, credits",
+      "technology": "PlanetScale Postgres",
+      "tags": [
+        "database"
+      ]
+    },
+    "workspaces-table": {
+      "id": "workspaces-table",
+      "kind": "component",
+      "name": "workspaces",
+      "description": "Fly app name, machine ID, status, config JSON, gateway token",
+      "technology": "Drizzle",
+      "tags": [
+        "database"
+      ]
+    },
+    "elite-chat-runs": {
+      "id": "elite-chat-runs",
+      "kind": "component",
+      "name": "elite_chat_runs",
+      "description": "Run tracking: runId, status, token count, cost",
+      "technology": "Drizzle",
+      "tags": [
+        "database"
+      ]
+    },
+    "agent-api-keys": {
+      "id": "agent-api-keys",
+      "kind": "component",
+      "name": "agent_api_keys",
+      "description": "Encrypted API keys for agent ↔ platform auth",
+      "technology": "Drizzle",
+      "tags": [
+        "database",
+        "security"
+      ]
+    },
+    "workspace-events": {
+      "id": "workspace-events",
+      "kind": "component",
+      "name": "workspace_events",
+      "description": "Lifecycle events (provisioned, started, failed)",
+      "technology": "Drizzle",
+      "tags": [
+        "database"
+      ]
+    },
+    "credit-balances": {
+      "id": "credit-balances",
+      "kind": "component",
+      "name": "credit_balances",
+      "description": "Per-org credit balance and usage tracking",
+      "technology": "Drizzle",
+      "tags": [
+        "database"
+      ]
+    },
+    "durable-streams": {
+      "id": "durable-streams",
+      "kind": "container",
+      "name": "Durable Streams Client",
+      "description": "Electric SQL durable streams — SSE transport for chat events",
+      "technology": "TypeScript",
+      "docsUrl": "/docs/architecture/durable-streams"
+    },
+    "ds-runtime": {
+      "id": "ds-runtime",
+      "kind": "component",
+      "name": "DS Runtime",
+      "description": "Dynamically loads @durable-streams/client, manages handles",
+      "technology": "TypeScript"
+    },
+    "sse-transport": {
+      "id": "sse-transport",
+      "kind": "component",
+      "name": "SSE Transport",
+      "description": "useEliteStreamTransport hook — connects to Electric SQL SSE endpoint",
+      "technology": "React"
+    },
+    "collections": {
+      "id": "collections",
+      "kind": "component",
+      "name": "Collections",
+      "description": "8 typed collections: messages, messageEvents, browserEvents, toolUse, toolResult, researchActivity, errors, runLifecycle",
+      "technology": "TypeScript / Zod"
+    },
+    "event-routing": {
+      "id": "event-routing",
+      "kind": "component",
+      "name": "Event Routing",
+      "description": "Routes raw durable stream events into typed collections",
+      "technology": "TypeScript"
+    },
+    "credit-system": {
+      "id": "credit-system",
+      "kind": "container",
+      "name": "Credit System",
+      "description": "Usage metering: classify model tier, deduct credits per run",
+      "technology": "TypeScript",
+      "docsUrl": "/docs/architecture/credits"
+    },
+    "classifier": {
+      "id": "classifier",
+      "kind": "component",
+      "name": "Classifier",
+      "description": "Maps model name → tier (sonnet/opus/flash)",
+      "technology": "TypeScript"
+    },
+    "credit-service": {
+      "id": "credit-service",
+      "kind": "component",
+      "name": "Credit Service",
+      "description": "Deduct, check balance, grant monthly renewal",
+      "technology": "TypeScript"
+    },
+    "tier-config": {
+      "id": "tier-config",
+      "kind": "component",
+      "name": "Tier Config",
+      "description": "Credit costs per model tier",
+      "technology": "TypeScript"
+    },
+    "elite": {
+      "id": "elite",
+      "kind": "system",
+      "name": "Elite Agent System",
+      "description": "Per-user AI agents — one Fly Machine per user with OpenClaw runtime",
+      "docsUrl": "/docs/architecture/elite-runtime"
+    },
+    "gateway": {
+      "id": "gateway",
+      "kind": "container",
+      "name": "OpenClaw Gateway",
+      "description": "Full agent runtime: LLM orchestration, tool system, memory, conversation",
+      "technology": "TypeScript / OpenClaw"
+    },
+    "conversation-engine": {
+      "id": "conversation-engine",
+      "kind": "component",
+      "name": "Conversation Engine",
+      "description": "Multi-session chat with context management",
+      "technology": "OpenClaw"
+    },
+    "tool-system": {
+      "id": "tool-system",
+      "kind": "component",
+      "name": "Tool System",
+      "description": "Extensible tool calls: browse, search, chart, research",
+      "technology": "OpenClaw"
+    },
+    "memory-system": {
+      "id": "memory-system",
+      "kind": "component",
+      "name": "Memory System",
+      "description": "MEMORY.md + memory/*.md persistent recall",
+      "technology": "OpenClaw"
+    },
+    "skill-loader": {
+      "id": "skill-loader",
+      "kind": "component",
+      "name": "Skill Loader",
+      "description": "Dynamic skill loading from workspace files",
+      "technology": "OpenClaw"
+    },
+    "agent-config": {
+      "id": "agent-config",
+      "kind": "container",
+      "name": "Agent Config",
+      "description": "openclaw.json + SOUL.md + IDENTITY.md + skills/",
+      "technology": "YAML/JSON/Markdown"
+    },
+    "openclaw-json": {
+      "id": "openclaw-json",
+      "kind": "component",
+      "name": "openclaw.json",
+      "description": "Agent configuration: model, tools, channels, skills",
+      "technology": "JSON"
+    },
+    "soul-md": {
+      "id": "soul-md",
+      "kind": "component",
+      "name": "SOUL.md",
+      "description": "Persona definition, tone, behavioral rules",
+      "technology": "Markdown"
+    },
+    "identity-md": {
+      "id": "identity-md",
+      "kind": "component",
+      "name": "IDENTITY.md",
+      "description": "Agent name, user context, plan tier",
+      "technology": "Markdown"
+    },
+    "managed-skills": {
+      "id": "managed-skills",
+      "kind": "component",
+      "name": "Managed Skills",
+      "description": "Platform-distributed skills (dashboard, research, morning-brief)",
+      "technology": "Markdown"
+    },
+    "relay": {
+      "id": "relay",
+      "kind": "container",
+      "name": "Event Relay",
+      "description": "Node.js script executed on Fly Machine — bridges OpenClaw SSE → platform ingest",
+      "technology": "TypeScript"
+    },
+    "sse-consumer": {
+      "id": "sse-consumer",
+      "kind": "component",
+      "name": "SSE Consumer",
+      "description": "Connects to OpenClaw gateway SSE stream",
+      "technology": "TypeScript"
+    },
+    "event-transformer": {
+      "id": "event-transformer",
+      "kind": "component",
+      "name": "Event Transformer",
+      "description": "Parses OpenClaw events → typed durable stream events",
+      "technology": "TypeScript"
+    },
+    "http-poster": {
+      "id": "http-poster",
+      "kind": "component",
+      "name": "HTTP Poster",
+      "description": "POSTs events to platform /api/agent/events ingest endpoint",
+      "technology": "TypeScript"
+    },
+    "heartbeat-emitter": {
+      "id": "heartbeat-emitter",
+      "kind": "component",
+      "name": "Heartbeat Emitter",
+      "description": "Periodic heartbeat events for run liveness",
+      "technology": "TypeScript"
+    },
+    "browser-tool": {
+      "id": "browser-tool",
+      "kind": "container",
+      "name": "Browser Tool",
+      "description": "Browserbase integration — cloud browser sessions, screenshot artifacts",
+      "technology": "TypeScript"
+    },
+    "file-system": {
+      "id": "file-system",
+      "kind": "container",
+      "name": "Agent File System",
+      "description": "Persistent Fly Volume: workspace/, memory/, skills/",
+      "technology": "Fly Volume",
+      "tags": [
+        "storage"
+      ]
+    },
+    "agent-infra": {
+      "id": "agent-infra",
+      "kind": "system",
+      "name": "Agent Infrastructure",
+      "description": "Provisioning, lifecycle management, template distribution",
+      "docsUrl": "/docs/architecture/provisioning"
+    },
+    "provisioner": {
+      "id": "provisioner",
+      "kind": "container",
+      "name": "Provisioner",
+      "description": "Inngest workspace-provisioning function — multi-step durable workflow",
+      "technology": "TypeScript / Inngest",
+      "docsUrl": "/docs/architecture/provisioning"
+    },
+    "create-record": {
+      "id": "create-record",
+      "kind": "component",
+      "name": "Create Workspace Record",
+      "description": "DB record + org assignment",
+      "technology": "Inngest Step"
+    },
+    "claim-pool": {
+      "id": "claim-pool",
+      "kind": "component",
+      "name": "Claim Pool Machine",
+      "description": "Claims pre-warmed Fly Machine from pool or creates fresh",
+      "technology": "Inngest Step"
+    },
+    "generate-keys": {
+      "id": "generate-keys",
+      "kind": "component",
+      "name": "Generate Keys",
+      "description": "API keys + gateway auth token, encrypted storage",
+      "technology": "Inngest Step"
+    },
+    "activate-workspace": {
+      "id": "activate-workspace",
+      "kind": "component",
+      "name": "Activate Workspace",
+      "description": "Marks workspace active, seeds config files on machine",
+      "technology": "Inngest Step"
+    },
+    "identity-sync": {
+      "id": "identity-sync",
+      "kind": "component",
+      "name": "Identity Sync",
+      "description": "Writes IDENTITY.md + SOUL.md with user-specific data",
+      "technology": "Inngest Step"
+    },
+    "wake-schedules": {
+      "id": "wake-schedules",
+      "kind": "component",
+      "name": "Wake Schedules",
+      "description": "Creates cron schedules for morning brief, daily pipeline",
+      "technology": "Inngest Step"
+    },
+    "agent-mail-pod": {
+      "id": "agent-mail-pod",
+      "kind": "component",
+      "name": "AgentMail Pod",
+      "description": "Provisions agent email address",
+      "technology": "Inngest Step"
+    },
+    "template-sync": {
+      "id": "template-sync",
+      "kind": "container",
+      "name": "Template Sync",
+      "description": "managed-template-sync: distributes skill updates + config patches to all active machines",
+      "technology": "TypeScript"
+    },
+    "golden-manifest": {
+      "id": "golden-manifest",
+      "kind": "component",
+      "name": "Golden Manifest",
+      "description": "Canonical workspace file set (skills, config, templates)",
+      "technology": "TypeScript"
+    },
+    "version-tracker": {
+      "id": "version-tracker",
+      "kind": "component",
+      "name": "Version Tracker",
+      "description": "Tracks MANAGED_TEMPLATE_VERSION per workspace config",
+      "technology": "TypeScript"
+    },
+    "file-writer": {
+      "id": "file-writer",
+      "kind": "component",
+      "name": "File Writer",
+      "description": "writeWorkspaceFiles via Fly Machine exec API",
+      "technology": "TypeScript"
+    },
+    "health-monitor": {
+      "id": "health-monitor",
+      "kind": "container",
+      "name": "Health Monitor",
+      "description": "Machine status tracking + workspace lifecycle transitions",
+      "technology": "TypeScript"
+    },
+    "status-tracker": {
+      "id": "status-tracker",
+      "kind": "component",
+      "name": "Status Tracker",
+      "description": "Workspace status enum: provisioning → hatching → active → suspended → degraded → failed",
+      "technology": "TypeScript"
+    },
+    "machine-waker": {
+      "id": "machine-waker",
+      "kind": "component",
+      "name": "Machine Waker",
+      "description": "ensureFlyMachineStarted — handles suspend → start lifecycle",
+      "technology": "TypeScript"
+    },
+    "gateway-checker": {
+      "id": "gateway-checker",
+      "kind": "component",
+      "name": "Gateway Checker",
+      "description": "waitForGatewayReady — polls /health on the OpenClaw gateway",
+      "technology": "TypeScript"
+    },
+    "runtime-revisions": {
+      "id": "runtime-revisions",
+      "kind": "container",
+      "name": "Runtime Revisions",
+      "description": "Version tracking for agent runtime (OpenClaw image, config schema)",
+      "technology": "TypeScript"
+    },
+    "pool": {
+      "id": "pool",
+      "kind": "container",
+      "name": "Machine Pool",
+      "description": "Pre-warmed Fly Machines for fast provisioning (~200ms claim vs ~30s create)",
+      "technology": "TypeScript"
+    },
+    "pool-manager": {
+      "id": "pool-manager",
+      "kind": "component",
+      "name": "Pool Manager",
+      "description": "Maintains pool of ready machines, handles claims + replenishment",
+      "technology": "TypeScript"
+    },
+    "pool-machines-table": {
+      "id": "pool-machines-table",
+      "kind": "component",
+      "name": "pool_machines",
+      "description": "DB table: available pre-warmed machine IDs",
+      "technology": "Drizzle"
+    }
+  },
+  "containment": [
+    {
+      "parentId": "platform",
+      "childId": "webapp",
+      "mode": "owns"
+    },
+    {
+      "parentId": "webapp",
+      "childId": "elite-dashboard",
+      "mode": "owns"
+    },
+    {
+      "parentId": "webapp",
+      "childId": "elite-chat",
+      "mode": "owns"
+    },
+    {
+      "parentId": "webapp",
+      "childId": "elite-onboarding",
+      "mode": "owns"
+    },
+    {
+      "parentId": "webapp",
+      "childId": "portfolio-views",
+      "mode": "owns"
+    },
+    {
+      "parentId": "webapp",
+      "childId": "strategy-forms",
+      "mode": "owns"
+    },
+    {
+      "parentId": "platform",
+      "childId": "api",
+      "mode": "owns"
+    },
+    {
+      "parentId": "api",
+      "childId": "elite-router",
+      "mode": "owns"
+    },
+    {
+      "parentId": "api",
+      "childId": "workspace-router",
+      "mode": "owns"
+    },
+    {
+      "parentId": "api",
+      "childId": "agent-events-router",
+      "mode": "owns"
+    },
+    {
+      "parentId": "api",
+      "childId": "chart-widget-router",
+      "mode": "owns"
+    },
+    {
+      "parentId": "api",
+      "childId": "exchange-router",
+      "mode": "owns"
+    },
+    {
+      "parentId": "api",
+      "childId": "artifacts-router",
+      "mode": "owns"
+    },
+    {
+      "parentId": "platform",
+      "childId": "auth",
+      "mode": "owns"
+    },
+    {
+      "parentId": "platform",
+      "childId": "db",
+      "mode": "owns"
+    },
+    {
+      "parentId": "db",
+      "childId": "workspaces-table",
+      "mode": "owns"
+    },
+    {
+      "parentId": "db",
+      "childId": "elite-chat-runs",
+      "mode": "owns"
+    },
+    {
+      "parentId": "db",
+      "childId": "agent-api-keys",
+      "mode": "owns"
+    },
+    {
+      "parentId": "db",
+      "childId": "workspace-events",
+      "mode": "owns"
+    },
+    {
+      "parentId": "db",
+      "childId": "credit-balances",
+      "mode": "owns"
+    },
+    {
+      "parentId": "platform",
+      "childId": "durable-streams",
+      "mode": "owns"
+    },
+    {
+      "parentId": "durable-streams",
+      "childId": "ds-runtime",
+      "mode": "owns"
+    },
+    {
+      "parentId": "durable-streams",
+      "childId": "sse-transport",
+      "mode": "owns"
+    },
+    {
+      "parentId": "durable-streams",
+      "childId": "collections",
+      "mode": "owns"
+    },
+    {
+      "parentId": "durable-streams",
+      "childId": "event-routing",
+      "mode": "owns"
+    },
+    {
+      "parentId": "platform",
+      "childId": "credit-system",
+      "mode": "owns"
+    },
+    {
+      "parentId": "credit-system",
+      "childId": "classifier",
+      "mode": "owns"
+    },
+    {
+      "parentId": "credit-system",
+      "childId": "credit-service",
+      "mode": "owns"
+    },
+    {
+      "parentId": "credit-system",
+      "childId": "tier-config",
+      "mode": "owns"
+    },
+    {
+      "parentId": "elite",
+      "childId": "gateway",
+      "mode": "owns"
+    },
+    {
+      "parentId": "gateway",
+      "childId": "conversation-engine",
+      "mode": "owns"
+    },
+    {
+      "parentId": "gateway",
+      "childId": "tool-system",
+      "mode": "owns"
+    },
+    {
+      "parentId": "gateway",
+      "childId": "memory-system",
+      "mode": "owns"
+    },
+    {
+      "parentId": "gateway",
+      "childId": "skill-loader",
+      "mode": "owns"
+    },
+    {
+      "parentId": "elite",
+      "childId": "agent-config",
+      "mode": "owns"
+    },
+    {
+      "parentId": "agent-config",
+      "childId": "openclaw-json",
+      "mode": "owns"
+    },
+    {
+      "parentId": "agent-config",
+      "childId": "soul-md",
+      "mode": "owns"
+    },
+    {
+      "parentId": "agent-config",
+      "childId": "identity-md",
+      "mode": "owns"
+    },
+    {
+      "parentId": "agent-config",
+      "childId": "managed-skills",
+      "mode": "owns"
+    },
+    {
+      "parentId": "elite",
+      "childId": "relay",
+      "mode": "owns"
+    },
+    {
+      "parentId": "relay",
+      "childId": "sse-consumer",
+      "mode": "owns"
+    },
+    {
+      "parentId": "relay",
+      "childId": "event-transformer",
+      "mode": "owns"
+    },
+    {
+      "parentId": "relay",
+      "childId": "http-poster",
+      "mode": "owns"
+    },
+    {
+      "parentId": "relay",
+      "childId": "heartbeat-emitter",
+      "mode": "owns"
+    },
+    {
+      "parentId": "elite",
+      "childId": "browser-tool",
+      "mode": "owns"
+    },
+    {
+      "parentId": "elite",
+      "childId": "file-system",
+      "mode": "owns"
+    },
+    {
+      "parentId": "agent-infra",
+      "childId": "provisioner",
+      "mode": "owns"
+    },
+    {
+      "parentId": "provisioner",
+      "childId": "create-record",
+      "mode": "owns"
+    },
+    {
+      "parentId": "provisioner",
+      "childId": "claim-pool",
+      "mode": "owns"
+    },
+    {
+      "parentId": "provisioner",
+      "childId": "generate-keys",
+      "mode": "owns"
+    },
+    {
+      "parentId": "provisioner",
+      "childId": "activate-workspace",
+      "mode": "owns"
+    },
+    {
+      "parentId": "provisioner",
+      "childId": "identity-sync",
+      "mode": "owns"
+    },
+    {
+      "parentId": "provisioner",
+      "childId": "wake-schedules",
+      "mode": "owns"
+    },
+    {
+      "parentId": "provisioner",
+      "childId": "agent-mail-pod",
+      "mode": "owns"
+    },
+    {
+      "parentId": "agent-infra",
+      "childId": "template-sync",
+      "mode": "owns"
+    },
+    {
+      "parentId": "template-sync",
+      "childId": "golden-manifest",
+      "mode": "owns"
+    },
+    {
+      "parentId": "template-sync",
+      "childId": "version-tracker",
+      "mode": "owns"
+    },
+    {
+      "parentId": "template-sync",
+      "childId": "file-writer",
+      "mode": "owns"
+    },
+    {
+      "parentId": "agent-infra",
+      "childId": "health-monitor",
+      "mode": "owns"
+    },
+    {
+      "parentId": "health-monitor",
+      "childId": "status-tracker",
+      "mode": "owns"
+    },
+    {
+      "parentId": "health-monitor",
+      "childId": "machine-waker",
+      "mode": "owns"
+    },
+    {
+      "parentId": "health-monitor",
+      "childId": "gateway-checker",
+      "mode": "owns"
+    },
+    {
+      "parentId": "agent-infra",
+      "childId": "runtime-revisions",
+      "mode": "owns"
+    },
+    {
+      "parentId": "agent-infra",
+      "childId": "pool",
+      "mode": "owns"
+    },
+    {
+      "parentId": "pool",
+      "childId": "pool-manager",
+      "mode": "owns"
+    },
+    {
+      "parentId": "pool",
+      "childId": "pool-machines-table",
+      "mode": "owns"
+    }
+  ],
+  "relationships": {
+    "user-platform": {
+      "id": "user-platform",
+      "sourceId": "user",
+      "targetId": "platform",
+      "label": "Uses web app"
+    },
+    "platform-elite": {
+      "id": "platform-elite",
+      "sourceId": "platform",
+      "targetId": "elite",
+      "label": "Provisions + communicates with agents"
+    },
+    "elite-fly": {
+      "id": "elite-fly",
+      "sourceId": "elite",
+      "targetId": "fly",
+      "label": "Runs on (one machine per user)"
+    },
+    "platform-vercel": {
+      "id": "platform-vercel",
+      "sourceId": "platform",
+      "targetId": "vercel",
+      "label": "Deployed on"
+    },
+    "platform-planetscale": {
+      "id": "platform-planetscale",
+      "sourceId": "platform",
+      "targetId": "planetscale",
+      "label": "Stores data in"
+    },
+    "platform-inngest": {
+      "id": "platform-inngest",
+      "sourceId": "platform",
+      "targetId": "inngest",
+      "label": "Schedules workflows via",
+      "style": "async"
+    },
+    "elite-browserbase": {
+      "id": "elite-browserbase",
+      "sourceId": "elite",
+      "targetId": "browserbase",
+      "label": "Browses web via"
+    },
+    "elite-tigris": {
+      "id": "elite-tigris",
+      "sourceId": "elite",
+      "targetId": "tigris",
+      "label": "Stores artifacts in"
+    },
+    "agent-infra-fly": {
+      "id": "agent-infra-fly",
+      "sourceId": "agent-infra",
+      "targetId": "fly",
+      "label": "Manages machines on (Fly Machines API)"
+    },
+    "agent-infra-inngest": {
+      "id": "agent-infra-inngest",
+      "sourceId": "agent-infra",
+      "targetId": "inngest",
+      "label": "Orchestrated by",
+      "style": "async"
+    },
+    "platform-moralis": {
+      "id": "platform-moralis",
+      "sourceId": "platform",
+      "targetId": "moralis",
+      "label": "Fetches blockchain data from"
+    },
+    "platform-electric-cloud": {
+      "id": "platform-electric-cloud",
+      "sourceId": "platform",
+      "targetId": "electric-cloud",
+      "label": "Durable Streams SSE via",
+      "style": "async"
+    },
+    "agent-infra-agentmail": {
+      "id": "agent-infra-agentmail",
+      "sourceId": "agent-infra",
+      "targetId": "agentmail",
+      "label": "Provisions email pods on"
+    },
+    "webapp-api": {
+      "id": "webapp-api",
+      "sourceId": "webapp",
+      "targetId": "api",
+      "label": "Calls (oRPC)"
+    },
+    "api-auth": {
+      "id": "api-auth",
+      "sourceId": "api",
+      "targetId": "auth",
+      "label": "Authenticates via"
+    },
+    "api-db": {
+      "id": "api-db",
+      "sourceId": "api",
+      "targetId": "db",
+      "label": "Queries (Drizzle ORM)"
+    },
+    "webapp-durable-streams": {
+      "id": "webapp-durable-streams",
+      "sourceId": "webapp",
+      "targetId": "durable-streams",
+      "label": "Subscribes to real-time events",
+      "perspectives": [
+        "dataFlow"
+      ],
+      "style": "async"
+    },
+    "durable-streams-electric-cloud": {
+      "id": "durable-streams-electric-cloud",
+      "sourceId": "durable-streams",
+      "targetId": "electric-cloud",
+      "label": "SSE connection to",
+      "style": "async"
+    },
+    "api-credit-system": {
+      "id": "api-credit-system",
+      "sourceId": "api",
+      "targetId": "credit-system",
+      "label": "Meters usage via"
+    },
+    "api-durable-streams": {
+      "id": "api-durable-streams",
+      "sourceId": "api",
+      "targetId": "durable-streams",
+      "label": "Writes events to durable streams",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "gateway-relay": {
+      "id": "gateway-relay",
+      "sourceId": "gateway",
+      "targetId": "relay",
+      "label": "Emits SSE events to",
+      "perspectives": [
+        "dataFlow"
+      ],
+      "style": "async"
+    },
+    "relay-api": {
+      "id": "relay-api",
+      "sourceId": "relay",
+      "targetId": "api",
+      "label": "POSTs events to /api/agent/events",
+      "perspectives": [
+        "dataFlow"
+      ],
+      "style": "async"
+    },
+    "gateway-browser-tool": {
+      "id": "gateway-browser-tool",
+      "sourceId": "gateway",
+      "targetId": "browser-tool",
+      "label": "Browses via"
+    },
+    "gateway-file-system": {
+      "id": "gateway-file-system",
+      "sourceId": "gateway",
+      "targetId": "file-system",
+      "label": "Reads/writes workspace files"
+    },
+    "gateway-agent-config": {
+      "id": "gateway-agent-config",
+      "sourceId": "gateway",
+      "targetId": "agent-config",
+      "label": "Loads configuration from"
+    },
+    "provisioner-pool": {
+      "id": "provisioner-pool",
+      "sourceId": "provisioner",
+      "targetId": "pool",
+      "label": "Claims machines from",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "provisioner-template-sync": {
+      "id": "provisioner-template-sync",
+      "sourceId": "provisioner",
+      "targetId": "template-sync",
+      "label": "Triggers initial file seeding",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "template-sync-elite": {
+      "id": "template-sync-elite",
+      "sourceId": "template-sync",
+      "targetId": "elite",
+      "label": "Writes files to (via Fly exec API)",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "health-monitor-elite": {
+      "id": "health-monitor-elite",
+      "sourceId": "health-monitor",
+      "targetId": "elite",
+      "label": "Monitors status of"
+    },
+    "runtime-revisions-template-sync": {
+      "id": "runtime-revisions-template-sync",
+      "sourceId": "runtime-revisions",
+      "targetId": "template-sync",
+      "label": "Provides version info to"
+    },
+    "elite-router-gateway-proxies-chat-messages-to-via-fly-exec": {
+      "id": "elite-router-gateway-proxies-chat-messages-to-via-fly-exec",
+      "sourceId": "elite-router",
+      "targetId": "gateway",
+      "label": "Proxies chat messages to (via Fly exec)"
+    },
+    "agent-events-router-durable-streams": {
+      "id": "agent-events-router-durable-streams",
+      "sourceId": "agent-events-router",
+      "targetId": "durable-streams",
+      "label": "Writes inbound relay events to",
+      "perspectives": [
+        "dataFlow"
+      ],
+      "style": "event"
+    },
+    "elite-chat-elite-router": {
+      "id": "elite-chat-elite-router",
+      "sourceId": "elite-chat",
+      "targetId": "elite-router",
+      "label": "Sends message",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "elite-router-gateway-exec-on-fly-machine": {
+      "id": "elite-router-gateway-exec-on-fly-machine",
+      "sourceId": "elite-router",
+      "targetId": "gateway",
+      "label": "Exec on Fly Machine",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "conversation-engine-tool-system": {
+      "id": "conversation-engine-tool-system",
+      "sourceId": "conversation-engine",
+      "targetId": "tool-system",
+      "label": "Invokes tools"
+    },
+    "sse-consumer-conversation-engine": {
+      "id": "sse-consumer-conversation-engine",
+      "sourceId": "sse-consumer",
+      "targetId": "conversation-engine",
+      "label": "Reads SSE stream",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "event-transformer-sse-consumer": {
+      "id": "event-transformer-sse-consumer",
+      "sourceId": "event-transformer",
+      "targetId": "sse-consumer",
+      "label": "Parses events from",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "http-poster-agent-events-router": {
+      "id": "http-poster-agent-events-router",
+      "sourceId": "http-poster",
+      "targetId": "agent-events-router",
+      "label": "POSTs typed events",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "agent-events-router-ds-runtime": {
+      "id": "agent-events-router-ds-runtime",
+      "sourceId": "agent-events-router",
+      "targetId": "ds-runtime",
+      "label": "Appends to durable stream",
+      "perspectives": [
+        "dataFlow"
+      ],
+      "style": "event"
+    },
+    "sse-transport-electric-cloud": {
+      "id": "sse-transport-electric-cloud",
+      "sourceId": "sse-transport",
+      "targetId": "electric-cloud",
+      "label": "SSE subscription",
+      "perspectives": [
+        "dataFlow"
+      ],
+      "style": "async"
+    },
+    "event-routing-collections": {
+      "id": "event-routing-collections",
+      "sourceId": "event-routing",
+      "targetId": "collections",
+      "label": "Routes into typed collections",
+      "perspectives": [
+        "dataFlow"
+      ],
+      "style": "event"
+    },
+    "elite-chat-collections": {
+      "id": "elite-chat-collections",
+      "sourceId": "elite-chat",
+      "targetId": "collections",
+      "label": "Renders from",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "create-record-workspaces-table": {
+      "id": "create-record-workspaces-table",
+      "sourceId": "create-record",
+      "targetId": "workspaces-table",
+      "label": "Inserts workspace record",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "claim-pool-pool-manager": {
+      "id": "claim-pool-pool-manager",
+      "sourceId": "claim-pool",
+      "targetId": "pool-manager",
+      "label": "Claims pre-warmed machine",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "generate-keys-agent-api-keys": {
+      "id": "generate-keys-agent-api-keys",
+      "sourceId": "generate-keys",
+      "targetId": "agent-api-keys",
+      "label": "Stores encrypted keys",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "activate-workspace-file-writer": {
+      "id": "activate-workspace-file-writer",
+      "sourceId": "activate-workspace",
+      "targetId": "file-writer",
+      "label": "Seeds config files",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "identity-sync-file-writer": {
+      "id": "identity-sync-file-writer",
+      "sourceId": "identity-sync",
+      "targetId": "file-writer",
+      "label": "Writes IDENTITY.md",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "wake-schedules-inngest": {
+      "id": "wake-schedules-inngest",
+      "sourceId": "wake-schedules",
+      "targetId": "inngest",
+      "label": "Creates cron functions",
+      "perspectives": [
+        "dataFlow"
+      ],
+      "style": "async"
+    },
+    "agent-mail-pod-agentmail": {
+      "id": "agent-mail-pod-agentmail",
+      "sourceId": "agent-mail-pod",
+      "targetId": "agentmail",
+      "label": "Creates email pod",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "elite-router-classifier": {
+      "id": "elite-router-classifier",
+      "sourceId": "elite-router",
+      "targetId": "classifier",
+      "label": "Classifies model tier",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "classifier-credit-service": {
+      "id": "classifier-credit-service",
+      "sourceId": "classifier",
+      "targetId": "credit-service",
+      "label": "Deducts credits",
+      "perspectives": [
+        "dataFlow"
+      ]
+    },
+    "credit-service-credit-balances": {
+      "id": "credit-service-credit-balances",
+      "sourceId": "credit-service",
+      "targetId": "credit-balances",
+      "label": "Updates balance",
+      "perspectives": [
+        "dataFlow"
+      ]
+    }
+  },
+  "views": {
+    "system-landscape": {
+      "id": "system-landscape",
+      "name": "System Landscape",
+      "rootElementId": "platform",
+      "perspective": "structure",
+      "placements": [
+        {
+          "placementId": "system-user",
+          "elementId": "user",
+          "position": {
+            "x": 40,
+            "y": 240
+          },
+          "size": {
+            "width": 180,
+            "height": 88
+          }
+        },
+        {
+          "placementId": "system-philip",
+          "elementId": "philip",
+          "position": {
+            "x": 40,
+            "y": 80
+          },
+          "size": {
+            "width": 180,
+            "height": 88
+          }
+        },
+        {
+          "placementId": "system-trym",
+          "elementId": "trym",
+          "position": {
+            "x": 40,
+            "y": 400
+          },
+          "size": {
+            "width": 180,
+            "height": 88
+          }
+        },
+        {
+          "placementId": "system-platform",
+          "elementId": "platform",
+          "position": {
+            "x": 350,
+            "y": 220
+          },
+          "size": {
+            "width": 300,
+            "height": 156
+          }
+        },
+        {
+          "placementId": "system-planetscale",
+          "elementId": "planetscale",
+          "position": {
+            "x": 360,
+            "y": 40
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "system-vercel",
+          "elementId": "vercel",
+          "position": {
+            "x": 350,
+            "y": 470
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "system-moralis",
+          "elementId": "moralis",
+          "position": {
+            "x": 350,
+            "y": 620
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "system-electric-cloud",
+          "elementId": "electric-cloud",
+          "position": {
+            "x": 620,
+            "y": 620
+          },
+          "size": {
+            "width": 250,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "system-elite",
+          "elementId": "elite",
+          "position": {
+            "x": 780,
+            "y": 200
+          },
+          "size": {
+            "width": 320,
+            "height": 156
+          }
+        },
+        {
+          "placementId": "system-agent-infra",
+          "elementId": "agent-infra",
+          "position": {
+            "x": 780,
+            "y": 430
+          },
+          "size": {
+            "width": 320,
+            "height": 156
+          }
+        },
+        {
+          "placementId": "system-fly",
+          "elementId": "fly",
+          "position": {
+            "x": 1180,
+            "y": 40
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "system-browserbase",
+          "elementId": "browserbase",
+          "position": {
+            "x": 1180,
+            "y": 190
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "system-tigris",
+          "elementId": "tigris",
+          "position": {
+            "x": 1180,
+            "y": 340
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "system-agentmail",
+          "elementId": "agentmail",
+          "position": {
+            "x": 1180,
+            "y": 490
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "system-inngest",
+          "elementId": "inngest",
+          "position": {
+            "x": 1180,
+            "y": 640
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        }
+      ],
+      "viewport": {
+        "x": -40,
+        "y": -40,
+        "zoom": 0.66
+      }
+    },
+    "platform-containers": {
+      "id": "platform-containers",
+      "name": "Platform Containers",
+      "rootElementId": "platform",
+      "perspective": "structure",
+      "placements": [
+        {
+          "placementId": "platform-root",
+          "elementId": "platform",
+          "position": {
+            "x": 80,
+            "y": 80
+          },
+          "size": {
+            "width": 1120,
+            "height": 760
+          }
+        },
+        {
+          "placementId": "platform-webapp",
+          "elementId": "webapp",
+          "parentPlacementId": "platform-root",
+          "position": {
+            "x": 70,
+            "y": 80
+          },
+          "size": {
+            "width": 280,
+            "height": 240
+          }
+        },
+        {
+          "placementId": "platform-api",
+          "elementId": "api",
+          "parentPlacementId": "platform-root",
+          "position": {
+            "x": 400,
+            "y": 80
+          },
+          "size": {
+            "width": 280,
+            "height": 240
+          }
+        },
+        {
+          "placementId": "platform-auth",
+          "elementId": "auth",
+          "parentPlacementId": "platform-root",
+          "position": {
+            "x": 730,
+            "y": 80
+          },
+          "size": {
+            "width": 260,
+            "height": 150
+          }
+        },
+        {
+          "placementId": "platform-db",
+          "elementId": "db",
+          "parentPlacementId": "platform-root",
+          "position": {
+            "x": 730,
+            "y": 270
+          },
+          "size": {
+            "width": 260,
+            "height": 220
+          }
+        },
+        {
+          "placementId": "platform-durable-streams",
+          "elementId": "durable-streams",
+          "parentPlacementId": "platform-root",
+          "position": {
+            "x": 70,
+            "y": 370
+          },
+          "size": {
+            "width": 430,
+            "height": 220
+          }
+        },
+        {
+          "placementId": "platform-credit-system",
+          "elementId": "credit-system",
+          "parentPlacementId": "platform-root",
+          "position": {
+            "x": 540,
+            "y": 540
+          },
+          "size": {
+            "width": 300,
+            "height": 150
+          }
+        },
+        {
+          "placementId": "platform-user",
+          "elementId": "user",
+          "position": {
+            "x": 10,
+            "y": 280
+          },
+          "size": {
+            "width": 170,
+            "height": 88
+          }
+        },
+        {
+          "placementId": "platform-elite",
+          "elementId": "elite",
+          "position": {
+            "x": 1280,
+            "y": 170
+          },
+          "size": {
+            "width": 280,
+            "height": 140
+          }
+        },
+        {
+          "placementId": "platform-planetscale",
+          "elementId": "planetscale",
+          "position": {
+            "x": 1280,
+            "y": 420
+          },
+          "size": {
+            "width": 230,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "platform-electric-cloud",
+          "elementId": "electric-cloud",
+          "position": {
+            "x": 1280,
+            "y": 300
+          },
+          "size": {
+            "width": 250,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "platform-inngest",
+          "elementId": "inngest",
+          "position": {
+            "x": 1280,
+            "y": 560
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "platform-vercel",
+          "elementId": "vercel",
+          "position": {
+            "x": 420,
+            "y": 10
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "platform-moralis",
+          "elementId": "moralis",
+          "position": {
+            "x": 40,
+            "y": 620
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        }
+      ],
+      "viewport": {
+        "x": -20,
+        "y": 0,
+        "zoom": 0.62
+      }
+    },
+    "elite-containers": {
+      "id": "elite-containers",
+      "name": "Elite Runtime Containers",
+      "rootElementId": "elite",
+      "perspective": "structure",
+      "placements": [
+        {
+          "placementId": "elite-root",
+          "elementId": "elite",
+          "position": {
+            "x": 120,
+            "y": 80
+          },
+          "size": {
+            "width": 1040,
+            "height": 760
+          }
+        },
+        {
+          "placementId": "elite-gateway",
+          "elementId": "gateway",
+          "parentPlacementId": "elite-root",
+          "position": {
+            "x": 70,
+            "y": 90
+          },
+          "size": {
+            "width": 350,
+            "height": 230
+          }
+        },
+        {
+          "placementId": "elite-relay",
+          "elementId": "relay",
+          "parentPlacementId": "elite-root",
+          "position": {
+            "x": 470,
+            "y": 90
+          },
+          "size": {
+            "width": 280,
+            "height": 230
+          }
+        },
+        {
+          "placementId": "elite-agent-config",
+          "elementId": "agent-config",
+          "parentPlacementId": "elite-root",
+          "position": {
+            "x": 70,
+            "y": 400
+          },
+          "size": {
+            "width": 330,
+            "height": 220
+          }
+        },
+        {
+          "placementId": "elite-browser-tool",
+          "elementId": "browser-tool",
+          "parentPlacementId": "elite-root",
+          "position": {
+            "x": 470,
+            "y": 400
+          },
+          "size": {
+            "width": 250,
+            "height": 160
+          }
+        },
+        {
+          "placementId": "elite-file-system",
+          "elementId": "file-system",
+          "parentPlacementId": "elite-root",
+          "position": {
+            "x": 780,
+            "y": 400
+          },
+          "size": {
+            "width": 220,
+            "height": 160
+          }
+        },
+        {
+          "placementId": "elite-platform",
+          "elementId": "platform",
+          "position": {
+            "x": 10,
+            "y": 210
+          },
+          "size": {
+            "width": 250,
+            "height": 140
+          }
+        },
+        {
+          "placementId": "elite-agent-infra",
+          "elementId": "agent-infra",
+          "position": {
+            "x": 10,
+            "y": 470
+          },
+          "size": {
+            "width": 250,
+            "height": 140
+          }
+        },
+        {
+          "placementId": "elite-fly",
+          "elementId": "fly",
+          "position": {
+            "x": 1260,
+            "y": 70
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "elite-browserbase",
+          "elementId": "browserbase",
+          "position": {
+            "x": 1260,
+            "y": 250
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "elite-tigris",
+          "elementId": "tigris",
+          "position": {
+            "x": 1260,
+            "y": 430
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        }
+      ],
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "zoom": 0.64
+      }
+    },
+    "agent-infra": {
+      "id": "agent-infra",
+      "name": "Agent Infrastructure",
+      "rootElementId": "agent-infra",
+      "perspective": "structure",
+      "placements": [
+        {
+          "placementId": "agent-infra-root",
+          "elementId": "agent-infra",
+          "position": {
+            "x": 100,
+            "y": 80
+          },
+          "size": {
+            "width": 1120,
+            "height": 760
+          }
+        },
+        {
+          "placementId": "agent-infra-provisioner",
+          "elementId": "provisioner",
+          "parentPlacementId": "agent-infra-root",
+          "position": {
+            "x": 60,
+            "y": 90
+          },
+          "size": {
+            "width": 310,
+            "height": 250
+          }
+        },
+        {
+          "placementId": "agent-infra-template-sync",
+          "elementId": "template-sync",
+          "parentPlacementId": "agent-infra-root",
+          "position": {
+            "x": 420,
+            "y": 90
+          },
+          "size": {
+            "width": 310,
+            "height": 220
+          }
+        },
+        {
+          "placementId": "agent-infra-health-monitor",
+          "elementId": "health-monitor",
+          "parentPlacementId": "agent-infra-root",
+          "position": {
+            "x": 780,
+            "y": 90
+          },
+          "size": {
+            "width": 260,
+            "height": 220
+          }
+        },
+        {
+          "placementId": "agent-infra-runtime-revisions",
+          "elementId": "runtime-revisions",
+          "parentPlacementId": "agent-infra-root",
+          "position": {
+            "x": 420,
+            "y": 380
+          },
+          "size": {
+            "width": 310,
+            "height": 130
+          }
+        },
+        {
+          "placementId": "agent-infra-pool",
+          "elementId": "pool",
+          "parentPlacementId": "agent-infra-root",
+          "position": {
+            "x": 60,
+            "y": 420
+          },
+          "size": {
+            "width": 310,
+            "height": 220
+          }
+        },
+        {
+          "placementId": "agent-infra-elite",
+          "elementId": "elite",
+          "position": {
+            "x": 1270,
+            "y": 200
+          },
+          "size": {
+            "width": 280,
+            "height": 140
+          }
+        },
+        {
+          "placementId": "agent-infra-fly",
+          "elementId": "fly",
+          "position": {
+            "x": 1270,
+            "y": 40
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "agent-infra-agentmail",
+          "elementId": "agentmail",
+          "position": {
+            "x": 1270,
+            "y": 420
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "agent-infra-inngest",
+          "elementId": "inngest",
+          "position": {
+            "x": 1270,
+            "y": 580
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        }
+      ],
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "zoom": 0.62
+      }
+    },
+    "chat-flow": {
+      "id": "chat-flow",
+      "name": "Chat Flow",
+      "rootElementId": "platform",
+      "perspective": "dataFlow",
+      "placements": [
+        {
+          "placementId": "chat-root-platform",
+          "elementId": "platform",
+          "position": {
+            "x": 40,
+            "y": 80
+          },
+          "size": {
+            "width": 760,
+            "height": 760
+          }
+        },
+        {
+          "placementId": "chat-webapp",
+          "elementId": "webapp",
+          "parentPlacementId": "chat-root-platform",
+          "position": {
+            "x": 50,
+            "y": 70
+          },
+          "size": {
+            "width": 290,
+            "height": 250
+          }
+        },
+        {
+          "placementId": "chat-elite-chat",
+          "elementId": "elite-chat",
+          "parentPlacementId": "chat-webapp",
+          "position": {
+            "x": 50,
+            "y": 110
+          },
+          "size": {
+            "width": 180,
+            "height": 92
+          }
+        },
+        {
+          "placementId": "chat-api",
+          "elementId": "api",
+          "parentPlacementId": "chat-root-platform",
+          "position": {
+            "x": 390,
+            "y": 70
+          },
+          "size": {
+            "width": 300,
+            "height": 250
+          }
+        },
+        {
+          "placementId": "chat-elite-router",
+          "elementId": "elite-router",
+          "parentPlacementId": "chat-api",
+          "position": {
+            "x": 40,
+            "y": 45
+          },
+          "size": {
+            "width": 210,
+            "height": 92
+          }
+        },
+        {
+          "placementId": "chat-agent-events-router",
+          "elementId": "agent-events-router",
+          "parentPlacementId": "chat-api",
+          "position": {
+            "x": 40,
+            "y": 155
+          },
+          "size": {
+            "width": 230,
+            "height": 92
+          }
+        },
+        {
+          "placementId": "chat-durable-streams",
+          "elementId": "durable-streams",
+          "parentPlacementId": "chat-root-platform",
+          "position": {
+            "x": 180,
+            "y": 390
+          },
+          "size": {
+            "width": 430,
+            "height": 240
+          }
+        },
+        {
+          "placementId": "chat-ds-runtime",
+          "elementId": "ds-runtime",
+          "parentPlacementId": "chat-durable-streams",
+          "position": {
+            "x": 30,
+            "y": 40
+          },
+          "size": {
+            "width": 170,
+            "height": 82
+          }
+        },
+        {
+          "placementId": "chat-sse-transport",
+          "elementId": "sse-transport",
+          "parentPlacementId": "chat-durable-streams",
+          "position": {
+            "x": 220,
+            "y": 40
+          },
+          "size": {
+            "width": 170,
+            "height": 82
+          }
+        },
+        {
+          "placementId": "chat-collections",
+          "elementId": "collections",
+          "parentPlacementId": "chat-durable-streams",
+          "position": {
+            "x": 30,
+            "y": 140
+          },
+          "size": {
+            "width": 170,
+            "height": 82
+          }
+        },
+        {
+          "placementId": "chat-event-routing",
+          "elementId": "event-routing",
+          "parentPlacementId": "chat-durable-streams",
+          "position": {
+            "x": 220,
+            "y": 140
+          },
+          "size": {
+            "width": 170,
+            "height": 82
+          }
+        },
+        {
+          "placementId": "chat-root-elite",
+          "elementId": "elite",
+          "position": {
+            "x": 880,
+            "y": 80
+          },
+          "size": {
+            "width": 560,
+            "height": 540
+          }
+        },
+        {
+          "placementId": "chat-gateway",
+          "elementId": "gateway",
+          "parentPlacementId": "chat-root-elite",
+          "position": {
+            "x": 40,
+            "y": 50
+          },
+          "size": {
+            "width": 230,
+            "height": 180
+          }
+        },
+        {
+          "placementId": "chat-conversation-engine",
+          "elementId": "conversation-engine",
+          "parentPlacementId": "chat-gateway",
+          "position": {
+            "x": 25,
+            "y": 55
+          },
+          "size": {
+            "width": 180,
+            "height": 82
+          }
+        },
+        {
+          "placementId": "chat-relay",
+          "elementId": "relay",
+          "parentPlacementId": "chat-root-elite",
+          "position": {
+            "x": 300,
+            "y": 50
+          },
+          "size": {
+            "width": 220,
+            "height": 320
+          }
+        },
+        {
+          "placementId": "chat-sse-consumer",
+          "elementId": "sse-consumer",
+          "parentPlacementId": "chat-relay",
+          "position": {
+            "x": 25,
+            "y": 35
+          },
+          "size": {
+            "width": 170,
+            "height": 72
+          }
+        },
+        {
+          "placementId": "chat-event-transformer",
+          "elementId": "event-transformer",
+          "parentPlacementId": "chat-relay",
+          "position": {
+            "x": 25,
+            "y": 120
+          },
+          "size": {
+            "width": 170,
+            "height": 72
+          }
+        },
+        {
+          "placementId": "chat-http-poster",
+          "elementId": "http-poster",
+          "parentPlacementId": "chat-relay",
+          "position": {
+            "x": 25,
+            "y": 205
+          },
+          "size": {
+            "width": 170,
+            "height": 72
+          }
+        },
+        {
+          "placementId": "chat-electric-cloud",
+          "elementId": "electric-cloud",
+          "position": {
+            "x": 980,
+            "y": 680
+          },
+          "size": {
+            "width": 250,
+            "height": 112
+          }
+        }
+      ],
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "zoom": 0.7
+      },
+      "excludeRelationships": [
+        "user-platform",
+        "platform-elite",
+        "elite-fly",
+        "platform-vercel",
+        "platform-planetscale",
+        "platform-inngest",
+        "elite-browserbase",
+        "elite-tigris",
+        "agent-infra-fly",
+        "agent-infra-inngest",
+        "platform-moralis",
+        "platform-electric-cloud",
+        "agent-infra-agentmail",
+        "webapp-api",
+        "api-auth",
+        "api-db",
+        "webapp-durable-streams",
+        "durable-streams-electric-cloud",
+        "api-credit-system",
+        "api-durable-streams",
+        "relay-api",
+        "gateway-browser-tool",
+        "gateway-file-system",
+        "gateway-agent-config",
+        "provisioner-pool",
+        "provisioner-template-sync",
+        "template-sync-elite",
+        "health-monitor-elite",
+        "runtime-revisions-template-sync",
+        "elite-router-gateway-proxies-chat-messages-to-via-fly-exec",
+        "agent-events-router-durable-streams",
+        "conversation-engine-tool-system",
+        "create-record-workspaces-table",
+        "claim-pool-pool-manager",
+        "generate-keys-agent-api-keys",
+        "activate-workspace-file-writer",
+        "identity-sync-file-writer",
+        "wake-schedules-inngest",
+        "agent-mail-pod-agentmail",
+        "elite-router-classifier",
+        "classifier-credit-service",
+        "credit-service-credit-balances"
+      ]
+    },
+    "credit-flow": {
+      "id": "credit-flow",
+      "name": "Credit Flow",
+      "rootElementId": "platform",
+      "perspective": "dataFlow",
+      "placements": [
+        {
+          "placementId": "credit-root-platform",
+          "elementId": "platform",
+          "position": {
+            "x": 100,
+            "y": 100
+          },
+          "size": {
+            "width": 1080,
+            "height": 620
+          }
+        },
+        {
+          "placementId": "credit-api",
+          "elementId": "api",
+          "parentPlacementId": "credit-root-platform",
+          "position": {
+            "x": 60,
+            "y": 90
+          },
+          "size": {
+            "width": 280,
+            "height": 220
+          }
+        },
+        {
+          "placementId": "credit-elite-router",
+          "elementId": "elite-router",
+          "parentPlacementId": "credit-api",
+          "position": {
+            "x": 35,
+            "y": 60
+          },
+          "size": {
+            "width": 210,
+            "height": 92
+          }
+        },
+        {
+          "placementId": "credit-credit-system",
+          "elementId": "credit-system",
+          "parentPlacementId": "credit-root-platform",
+          "position": {
+            "x": 400,
+            "y": 90
+          },
+          "size": {
+            "width": 420,
+            "height": 260
+          }
+        },
+        {
+          "placementId": "credit-classifier",
+          "elementId": "classifier",
+          "parentPlacementId": "credit-credit-system",
+          "position": {
+            "x": 30,
+            "y": 50
+          },
+          "size": {
+            "width": 160,
+            "height": 82
+          }
+        },
+        {
+          "placementId": "credit-credit-service",
+          "elementId": "credit-service",
+          "parentPlacementId": "credit-credit-system",
+          "position": {
+            "x": 215,
+            "y": 50
+          },
+          "size": {
+            "width": 170,
+            "height": 82
+          }
+        },
+        {
+          "placementId": "credit-tier-config",
+          "elementId": "tier-config",
+          "parentPlacementId": "credit-credit-system",
+          "position": {
+            "x": 120,
+            "y": 155
+          },
+          "size": {
+            "width": 170,
+            "height": 82
+          }
+        },
+        {
+          "placementId": "credit-db",
+          "elementId": "db",
+          "parentPlacementId": "credit-root-platform",
+          "position": {
+            "x": 400,
+            "y": 390
+          },
+          "size": {
+            "width": 320,
+            "height": 170
+          }
+        },
+        {
+          "placementId": "credit-credit-balances",
+          "elementId": "credit-balances",
+          "parentPlacementId": "credit-db",
+          "position": {
+            "x": 60,
+            "y": 50
+          },
+          "size": {
+            "width": 190,
+            "height": 82
+          }
+        }
+      ],
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "zoom": 0.82
+      },
+      "excludeRelationships": [
+        "user-platform",
+        "platform-elite",
+        "elite-fly",
+        "platform-vercel",
+        "platform-planetscale",
+        "platform-inngest",
+        "elite-browserbase",
+        "elite-tigris",
+        "agent-infra-fly",
+        "agent-infra-inngest",
+        "platform-moralis",
+        "platform-electric-cloud",
+        "agent-infra-agentmail",
+        "webapp-api",
+        "api-auth",
+        "api-db",
+        "webapp-durable-streams",
+        "durable-streams-electric-cloud",
+        "api-credit-system",
+        "api-durable-streams",
+        "gateway-relay",
+        "relay-api",
+        "gateway-browser-tool",
+        "gateway-file-system",
+        "gateway-agent-config",
+        "provisioner-pool",
+        "provisioner-template-sync",
+        "template-sync-elite",
+        "health-monitor-elite",
+        "runtime-revisions-template-sync",
+        "elite-router-gateway-proxies-chat-messages-to-via-fly-exec",
+        "agent-events-router-durable-streams",
+        "elite-chat-elite-router",
+        "elite-router-gateway-exec-on-fly-machine",
+        "conversation-engine-tool-system",
+        "sse-consumer-conversation-engine",
+        "event-transformer-sse-consumer",
+        "http-poster-agent-events-router",
+        "agent-events-router-ds-runtime",
+        "sse-transport-electric-cloud",
+        "event-routing-collections",
+        "elite-chat-collections",
+        "create-record-workspaces-table",
+        "claim-pool-pool-manager",
+        "generate-keys-agent-api-keys",
+        "activate-workspace-file-writer",
+        "identity-sync-file-writer",
+        "wake-schedules-inngest",
+        "agent-mail-pod-agentmail"
+      ]
+    },
+    "provisioning-flow": {
+      "id": "provisioning-flow",
+      "name": "Provisioning Flow",
+      "rootElementId": "agent-infra",
+      "perspective": "dataFlow",
+      "placements": [
+        {
+          "placementId": "provision-root-agent-infra",
+          "elementId": "agent-infra",
+          "position": {
+            "x": 40,
+            "y": 60
+          },
+          "size": {
+            "width": 1180,
+            "height": 900
+          }
+        },
+        {
+          "placementId": "provision-provisioner",
+          "elementId": "provisioner",
+          "parentPlacementId": "provision-root-agent-infra",
+          "position": {
+            "x": 50,
+            "y": 70
+          },
+          "size": {
+            "width": 340,
+            "height": 560
+          }
+        },
+        {
+          "placementId": "provision-create-record",
+          "elementId": "create-record",
+          "parentPlacementId": "provision-provisioner",
+          "position": {
+            "x": 40,
+            "y": 40
+          },
+          "size": {
+            "width": 240,
+            "height": 72
+          }
+        },
+        {
+          "placementId": "provision-claim-pool",
+          "elementId": "claim-pool",
+          "parentPlacementId": "provision-provisioner",
+          "position": {
+            "x": 40,
+            "y": 125
+          },
+          "size": {
+            "width": 240,
+            "height": 72
+          }
+        },
+        {
+          "placementId": "provision-generate-keys",
+          "elementId": "generate-keys",
+          "parentPlacementId": "provision-provisioner",
+          "position": {
+            "x": 40,
+            "y": 210
+          },
+          "size": {
+            "width": 240,
+            "height": 72
+          }
+        },
+        {
+          "placementId": "provision-activate-workspace",
+          "elementId": "activate-workspace",
+          "parentPlacementId": "provision-provisioner",
+          "position": {
+            "x": 40,
+            "y": 295
+          },
+          "size": {
+            "width": 240,
+            "height": 72
+          }
+        },
+        {
+          "placementId": "provision-identity-sync",
+          "elementId": "identity-sync",
+          "parentPlacementId": "provision-provisioner",
+          "position": {
+            "x": 40,
+            "y": 380
+          },
+          "size": {
+            "width": 240,
+            "height": 72
+          }
+        },
+        {
+          "placementId": "provision-wake-schedules",
+          "elementId": "wake-schedules",
+          "parentPlacementId": "provision-provisioner",
+          "position": {
+            "x": 40,
+            "y": 465
+          },
+          "size": {
+            "width": 240,
+            "height": 72
+          }
+        },
+        {
+          "placementId": "provision-agent-mail-pod",
+          "elementId": "agent-mail-pod",
+          "parentPlacementId": "provision-provisioner",
+          "position": {
+            "x": 40,
+            "y": 550
+          },
+          "size": {
+            "width": 240,
+            "height": 72
+          }
+        },
+        {
+          "placementId": "provision-template-sync",
+          "elementId": "template-sync",
+          "parentPlacementId": "provision-root-agent-infra",
+          "position": {
+            "x": 450,
+            "y": 70
+          },
+          "size": {
+            "width": 320,
+            "height": 250
+          }
+        },
+        {
+          "placementId": "provision-file-writer",
+          "elementId": "file-writer",
+          "parentPlacementId": "provision-template-sync",
+          "position": {
+            "x": 75,
+            "y": 85
+          },
+          "size": {
+            "width": 170,
+            "height": 82
+          }
+        },
+        {
+          "placementId": "provision-pool",
+          "elementId": "pool",
+          "parentPlacementId": "provision-root-agent-infra",
+          "position": {
+            "x": 450,
+            "y": 380
+          },
+          "size": {
+            "width": 320,
+            "height": 190
+          }
+        },
+        {
+          "placementId": "provision-pool-manager",
+          "elementId": "pool-manager",
+          "parentPlacementId": "provision-pool",
+          "position": {
+            "x": 70,
+            "y": 55
+          },
+          "size": {
+            "width": 180,
+            "height": 82
+          }
+        },
+        {
+          "placementId": "provision-db",
+          "elementId": "db",
+          "position": {
+            "x": 890,
+            "y": 70
+          },
+          "size": {
+            "width": 300,
+            "height": 260
+          }
+        },
+        {
+          "placementId": "provision-workspaces-table",
+          "elementId": "workspaces-table",
+          "parentPlacementId": "provision-db",
+          "position": {
+            "x": 50,
+            "y": 55
+          },
+          "size": {
+            "width": 180,
+            "height": 82
+          }
+        },
+        {
+          "placementId": "provision-agent-api-keys",
+          "elementId": "agent-api-keys",
+          "parentPlacementId": "provision-db",
+          "position": {
+            "x": 50,
+            "y": 150
+          },
+          "size": {
+            "width": 180,
+            "height": 82
+          }
+        },
+        {
+          "placementId": "provision-elite",
+          "elementId": "elite",
+          "position": {
+            "x": 890,
+            "y": 410
+          },
+          "size": {
+            "width": 280,
+            "height": 140
+          }
+        },
+        {
+          "placementId": "provision-inngest",
+          "elementId": "inngest",
+          "position": {
+            "x": 890,
+            "y": 620
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        },
+        {
+          "placementId": "provision-agentmail",
+          "elementId": "agentmail",
+          "position": {
+            "x": 1170,
+            "y": 620
+          },
+          "size": {
+            "width": 220,
+            "height": 112
+          }
+        }
+      ],
+      "viewport": {
+        "x": 0,
+        "y": 0,
+        "zoom": 0.68
+      },
+      "excludeRelationships": [
+        "user-platform",
+        "platform-elite",
+        "elite-fly",
+        "platform-vercel",
+        "platform-planetscale",
+        "platform-inngest",
+        "elite-browserbase",
+        "elite-tigris",
+        "agent-infra-fly",
+        "agent-infra-inngest",
+        "platform-moralis",
+        "platform-electric-cloud",
+        "agent-infra-agentmail",
+        "webapp-api",
+        "api-auth",
+        "api-db",
+        "webapp-durable-streams",
+        "durable-streams-electric-cloud",
+        "api-credit-system",
+        "api-durable-streams",
+        "gateway-relay",
+        "relay-api",
+        "gateway-browser-tool",
+        "gateway-file-system",
+        "gateway-agent-config",
+        "health-monitor-elite",
+        "runtime-revisions-template-sync",
+        "elite-router-gateway-proxies-chat-messages-to-via-fly-exec",
+        "agent-events-router-durable-streams",
+        "elite-chat-elite-router",
+        "elite-router-gateway-exec-on-fly-machine",
+        "conversation-engine-tool-system",
+        "sse-consumer-conversation-engine",
+        "event-transformer-sse-consumer",
+        "http-poster-agent-events-router",
+        "agent-events-router-ds-runtime",
+        "sse-transport-electric-cloud",
+        "event-routing-collections",
+        "elite-chat-collections",
+        "elite-router-classifier",
+        "classifier-credit-service",
+        "credit-service-credit-balances"
+      ]
+    }
+  }
+}
