@@ -1,0 +1,7 @@
+.next
+node_modules
+bun.lock
+diagrams/d2
+diagrams/svg
+.source
+.tmp

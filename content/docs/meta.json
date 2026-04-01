@@ -1,0 +1,14 @@
+{
+  "title": "BlockMind Internal Docs",
+  "pages": [
+    "index",
+    "---Architecture---",
+    "architecture",
+    "---Systems---",
+    "systems",
+    "---Decisions---",
+    "decisions",
+    "---Agents---",
+    "agents"
+  ]
+}

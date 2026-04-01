@@ -1,0 +1,28 @@
+---
+title: Platform
+description: BlockMind web application architecture.
+---
+
+## Platform Architecture
+
+The BlockMind platform is a TanStack Start application deployed on Vercel.
+
+<D2Diagram name="PlatformContainers" title="Platform — Container View" />
+
+### Components
+
+| Container | Technology | Purpose |
+|-----------|-----------|---------|
+| Web App | TanStack Start + Vite | SPA with SSR, file-based routing |
+| API Layer | oRPC | Type-safe RPC routes |
+| Auth | Better Auth | Authentication and session management |
+| Database | Drizzle ORM → PlanetScale | Postgres with type-safe schema |
+| Electric SQL | Durable Streams + Postgres Sync | Real-time data sync to client |
+| Credit System | TypeScript | Usage metering and billing |
+
+### Key Patterns
+
+- **TanStack Router** — File-based routing in `src/routes/`
+- **TanStack DB** — Client-side collections synced via Electric SQL
+- **oRPC** — Type-safe API layer (preferred over tRPC)
+- **Inngest** — All scheduled work (crons, pipelines, provisioning)

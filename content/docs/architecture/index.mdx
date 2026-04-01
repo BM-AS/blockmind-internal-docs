@@ -1,0 +1,27 @@
+---
+title: System Landscape
+description: High-level overview of all BlockMind systems and their relationships.
+---
+
+## BlockMind System Landscape
+
+The BlockMind platform consists of three primary systems: the Platform (web application), the Elite Agent System (per-user AI agents), and the Agent Infrastructure (provisioning and lifecycle management).
+
+<D2Diagram name="SystemLandscape" title="System Landscape — All Systems" />
+
+### External Dependencies
+
+| System | Purpose |
+|--------|---------|
+| PlanetScale | Postgres database (Drizzle ORM) |
+| Fly.io | Agent compute (dedicated Fly Machines per user) |
+| Vercel | Platform hosting + serverless functions |
+| Inngest | Durable workflow orchestration |
+| Browserbase | Cloud browser sessions for agents |
+| Tigris S3 | Artifact storage (screenshots, files) |
+| Moralis | Blockchain/DeFi data provider |
+
+### Drill Down
+
+- [Platform Internals](/docs/architecture/platform) — Web app, API, auth, credits
+- [Elite Agent System](/docs/architecture/elite) — Per-user agent architecture

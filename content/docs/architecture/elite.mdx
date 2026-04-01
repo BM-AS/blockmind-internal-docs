@@ -1,0 +1,27 @@
+---
+title: Elite Agent System
+description: Per-user AI agent architecture on Fly Machines.
+---
+
+## Elite Agent System
+
+Every BlockMind user gets a dedicated AI agent running on its own Fly Machine. The agent runs an OpenClaw gateway with a personalized configuration.
+
+<D2Diagram name="EliteContainers" title="Elite — Container View" />
+
+### Components
+
+| Container | Technology | Purpose |
+|-----------|-----------|---------|
+| OpenClaw Gateway | TypeScript / OpenClaw | Agent runtime — handles tool calls, memory, conversation |
+| Agent Config | YAML/JSON | Skills, tools, persona definition per user |
+| Event Relay | TypeScript | SSE bridge: streams agent events to platform via Electric SQL |
+| Browser Tool | TypeScript | Browserbase integration for web browsing |
+| Agent File System | Fly Volume | Persistent storage per agent |
+
+### Key Design Decisions
+
+- **One machine per user** — No multi-tenancy. Complete isolation for security and reliability.
+- **OpenClaw as runtime** — Provides tool system, memory, conversation management out of the box.
+- **SSE via Electric SQL Durable Streams** — Real-time event streaming from agent to platform UI.
+- **Browserbase for browsing** — Cloud browser sessions, not headless Chrome on the machine.
