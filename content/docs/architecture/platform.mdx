@@ -1,53 +1,36 @@
 ---
 title: Platform
-description: BlockMind web application architecture — containers and their relationships.
+description: TanStack Start request surface, route boundaries, and the platform side of Elite.
 ---
 
-## Platform Architecture
+The platform is the control plane for user-visible work. It owns the web experience, accepts Elite traffic at the boundary, authenticates callbacks, and turns runtime output into durable product state.
 
-The BlockMind platform is a TanStack Start application deployed on Vercel. It handles portfolio tracking, the Elite chat UI, real-time data sync, and the credit system.
+The most important architectural point is that the critical Elite endpoints documented here are file routes, not oRPC procedures. If you are debugging the relay boundary, start from those file routes first.
 
-<D2Diagram name="PlatformContainers" title="Platform — Container View" />
+<D2Diagram name="PlatformContainers" title="Platform Container View" />
 
-### Containers
+## Elite-facing endpoints
 
-| Container | Technology | Purpose |
-|-----------|-----------|---------|
-| **Web App** | TanStack Start + Vite | SPA with SSR, file-based routing in `src/routes/` |
-| **API Layer** | oRPC | Type-safe RPC routes — Elite chat, workspace management, exchanges, artifacts |
-| **Auth** | Better Auth | Session management, OAuth, role-based access |
-| **Database** | Drizzle ORM → PlanetScale | Postgres: workspaces, users, orgs, chat runs, credits |
-| **Durable Streams Client** | Electric SQL | 8 typed collections for real-time chat events via SSE |
-| **Credit System** | TypeScript | Model tier classification → credit deduction per run |
+| Endpoint | Route type | Role |
+| --- | --- | --- |
+| `/api/elite/chat` | TanStack file route | Accepts the user-side request that starts Elite chat work |
+| `/api/elite/ingest` | TanStack file route | Accepts relay callbacks from the runtime ingest path |
+| `/api/elite/browser-events` | TanStack file route | Accepts browser-specific events on a separate channel |
 
-### Key Patterns
+## Boundary rules that matter
 
-- **TanStack Router** — File-based routing in `src/routes/`
-- **TanStack DB** — Client-side collections synced via Electric SQL (`ssr: false` mandatory on live query routes)
-- **oRPC** — Type-safe API layer (preferred over tRPC)
-- **Inngest** — All scheduled work: crons, pipelines, provisioning
-- **Durable Streams** — SSE transport for agent chat events (not Postgres Sync — deliberate architecture decision, see [ADR](/docs/decisions/2026-04-01-internal-docs-platform))
+- `/api/elite/chat` is a file route, so it should not be documented or reasoned about as an oRPC boundary.
+- `/api/elite/ingest` is also a file route and authenticates bearer callbacks through `resolveAgentCallbackAuthContext`.
+- Browser activity is intentionally split out to `/api/elite/browser-events` instead of being folded into the main ingest callback path.
 
-### Database Schema (Key Tables)
+## What the platform does after ingest
 
-| Table | Purpose |
-|-------|---------|
-| `workspaces` | Fly app name, machine ID, status, config JSON, encrypted gateway token |
-| `elite_chat_runs` | Run tracking: runId, status, token count, cost |
-| `agent_api_keys` | Encrypted API keys for agent ↔ platform auth |
-| `workspace_events` | Lifecycle events (provisioned, started, failed) |
-| `credit_balances` | Per-org credit balance and usage tracking |
-| `pool_machines` | Pre-warmed Fly Machine IDs for fast provisioning |
+The runtime does not send UI-ready state directly to the browser. The platform receives ingest events, authenticates them, and transforms them into durable stream events through `applyEliteRunIngestEvents` in `runs.ts`. That transformation boundary is what makes replay, recovery, and multi-surface product state possible.
 
-### Durable Streams Collections
+## How this page relates to the rest of the docs
 
-The platform uses 8 typed collections to route chat events from agent to UI:
+- Read [Chat flow](/docs/architecture/chat-flow) for the exact relay configuration and event types.
+- Read [Durable streams](/docs/architecture/durable-streams) for what the platform stores and replays after ingest.
+- Read [Auth](/docs/architecture/auth) for the human session and agent callback auth surfaces.
 
-1. **messages** — Accumulated chat messages (user + assistant)
-2. **messageEvents** — Raw event stream (user-message, assistant-token, assistant-complete, assistant-chart, error)
-3. **browserEvents** — Browser session start/action/end events
-4. **toolUseEvents** — Tool invocation tracking (browse, search, chart, research)
-5. **toolResultEvents** — Tool result lifecycle (pending → ready/failed)
-6. **researchActivityEvents** — Research activity progress events
-7. **errorEvents** — Error events from agent or relay
-8. **runLifecycleEvents** — Run lifecycle (accepted, started, heartbeat)
+<StatusNote date="2026-04-01" commit="b719cf5" />

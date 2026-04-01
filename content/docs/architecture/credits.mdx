@@ -1,0 +1,64 @@
+---
+title: Credits
+description: Accurate billing model for action pricing, reservation, and settlement.
+---
+
+The credit system charges by action type, not by model tier. That is the most important correction in this rewrite, because it changes how product work should be explained, priced, and debugged.
+
+Credits are user-scoped, reserved before work runs, and settled afterward. The system therefore has two jobs: block work that clearly cannot be paid for, and reconcile the final cost cleanly once the run finishes.
+
+<D2Diagram name="CreditFlow" title="Credit Reservation and Settlement" />
+
+## Pricing model
+
+| Action type | Pricing controls |
+| --- | --- |
+| `chat` | `floor`, `reserveCap` |
+| `data_fetch` | `floor`, `reserveCap` |
+| `portfolio_scan` | `floor`, `reserveCap` |
+| `morning_brief` | `floor`, `reserveCap` |
+| `analysis` | `floor`, `reserveCap` |
+| `kol_analysis` | `floor`, `reserveCap` |
+| `deep_dive` | `floor`, `reserveCap` |
+
+`floor` is the minimum cost for that action type. `reserveCap` is the maximum amount the platform may reserve up front while the real cost is still unknown.
+
+## Scope and lifecycle
+
+- Balances are stored per user through `userId` in `credit_balances`.
+- The flow is `reserveCredits` before execution, then `settleReservation` after execution.
+- Settlement can charge the actual amount used or refund unused reserved credits.
+
+## Transactions
+
+### Transaction types
+
+- `monthly_grant`
+- `invite_bonus`
+- `referral_bonus`
+- `topup_purchase`
+- `action_deduction`
+- `action_reserve`
+- `action_refund`
+
+### Transaction statuses
+
+- `pending`
+- `completed`
+- `refunded`
+
+## Plan tiers
+
+| Tier | Credits |
+| --- | --- |
+| `free` | 30 |
+| `starter` | 275 |
+| `pro` | 990 |
+| `elite` | 3025 |
+| `elite-plus` | 10450 |
+
+## Why reservation exists
+
+Without reservation, the platform would only discover affordability after expensive work had already happened. With reservation plus settlement, the system can reject impossible work early and still bill the actual cost instead of a rough estimate.
+
+<StatusNote date="2026-04-01" commit="b719cf5" />

@@ -1,0 +1,55 @@
+---
+title: Provisioning
+description: Real Inngest step order for creating, activating, and finalizing a workspace.
+---
+
+Provisioning is the workflow that turns a requested workspace into a usable runtime. The order matters because several steps only make sense after the machine exists and the workspace record is already in the right state.
+
+This page reflects the actual Inngest sequence, including the parallel branch, the AgentMail pod versus inbox distinction, and the compensation order when something fails.
+
+<D2Diagram name="ProvisioningFlow" title="Provisioning Workflow" />
+
+## Actual step order
+
+| # | Step | Notes |
+| --- | --- | --- |
+| 1 | `create-workspace-record` | Status moves from `queued` to `provisioning` |
+| 2 | `claim-pool-machine` or `generate-keys-and-create-fly-resources` | Warm-pool path or cold-create path |
+| 3 | `provision-agentmail-pod` | Provisions the AgentMail pod, not the inbox |
+| 4 | `activate-workspace` | Status moves to `active` |
+| 5 | `wait-for-machine-started` | Waits for the machine to come up |
+| 6 | `sync-workspace-machine-binding` | Syncs the workspace to the machine binding |
+| 7 | `write-workspace-files` and `wait-for-gateway-ready` | These run in parallel |
+| 8 | `seed-security-config` | Applies security configuration after the gateway is ready |
+| 9 | `create-wake-schedules` | Creates wake schedules |
+| 10 | `provision-agentmail-inbox` | Best-effort and separate from pod provisioning |
+| 11 | `finalize-workspace` | Final platform-side finalization |
+| 12 | `trigger-session-bootstrap` | Sends the bootstrap event |
+| 13 | `delete-claimed-pool-machine-record` | Cleanup for the pool-claim path |
+| 14 | `restore-machine-autostop` | Restores normal autostop behavior |
+
+## Why this order is easy to get wrong
+
+- The workflow creates the workspace record before it has a machine ready.
+- AgentMail pod provisioning happens early; AgentMail inbox provisioning happens later and is best-effort.
+- File writing and gateway readiness are a parallel pair, not a single serial stage.
+- Cleanup for pool claims happens near the end, not at the start.
+
+## Compensation order
+
+If provisioning fails, compensation proceeds in this order:
+
+1. `compensate-destroy-fly`
+2. `compensate-delete-pool-machine-record`
+3. `compensate-keys`
+4. `mark-workspace-failed`
+
+## Related operational truth
+
+The workspace lifecycle enum is:
+
+`queued` → `provisioning` → `seeding` → `active` → `suspended` | `degraded` | `failed` | `destroyed`
+
+Read [Workspace states](/docs/operations/workspace-states) for the operational meaning of each state outside the provisioning path.
+
+<StatusNote date="2026-04-01" commit="b719cf5" />

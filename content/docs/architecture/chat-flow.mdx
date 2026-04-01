@@ -1,61 +1,47 @@
 ---
 title: Chat Message Flow
-description: How a user message travels from the browser to the agent and back, via durable streams.
+description: Accurate relay, ingest, and browser-event boundaries for Elite chat.
 ---
 
-## Chat Message Flow
+Chat flow in BlockMind is a platform-coordinated handoff into the Elite runtime, followed by a structured callback stream back into the platform. The crucial detail is that the relay boundary is the ingest file route, not an oRPC endpoint.
 
-This is the most important flow in the system. A user message travels through 13 steps before the response appears in the UI.
+That correction matters because the platform is doing more than proxying text. It authenticates agent callbacks, separates browser activity onto its own endpoint, and transforms raw ingest into the durable events the product actually consumes.
 
-<D2Diagram name="ChatFlow" title="Chat Message Flow — End to End" />
+<D2Diagram name="ChatFlow" title="Chat Message Flow" />
 
-### Step-by-Step
+## Boundary summary
 
-| Step | Component | Action |
-|------|-----------|--------|
-| 1 | **User** | Types message in chat UI |
-| 2 | **Elite Chat UI** | Calls `chat.send()` via oRPC |
-| 3 | **Elite Router** | Checks credit balance, validates session |
-| 4 | **Elite Router** | Executes command on Fly Machine via exec API |
-| 5 | **Fly Exec** | Delivers message to OpenClaw gateway |
-| 6 | **OpenClaw Gateway** | Streams completion from LLM (Claude/GPT) |
-| 7 | **Gateway → Relay** | Emits SSE events to the relay script |
-| 8 | **Event Relay** | POSTs typed events to platform `/api/agent/events` |
-| 9 | **Ingest Endpoint** | Appends events to durable stream |
-| 10 | **Durable Stream** | Persisted in Electric SQL |
-| 11 | **Electric SQL** | Pushes events via SSE to client |
-| 12 | **SSE Transport** | Routes events into typed collections |
-| 13 | **Elite Chat UI** | Renders streaming tokens |
+| Surface | Reality |
+| --- | --- |
+| Chat entrypoint | `/api/elite/chat` is a TanStack file route |
+| Relay ingest target | Relay launches with `ingestPath: '/api/elite/ingest'` |
+| Ingest auth | `/api/elite/ingest` accepts bearer auth through `resolveAgentCallbackAuthContext` |
+| Browser activity | Sent to separate `/api/elite/browser-events` endpoint |
+| Artifact delivery | Sent to a separate artifact endpoint |
 
-### Key Design Properties
+## What the relay sends
 
-- **No direct WebSocket** between browser and agent. All events flow through the platform API + Electric SQL.
-- **Durable by default** — Events are persisted in Electric SQL. Page refresh replays from last offset.
-- **Credit check is pre-flight** — Balance verified before the agent runs, not after.
-- **Relay is per-run** — A new relay process is launched for each chat run, with a unique `runId`.
-- **Heartbeats** — Relay emits periodic heartbeat events so the UI knows the run is alive.
+`/api/elite/ingest` accepts a discriminated union of ingest events:
 
-### Event Types
+- `upstream`
+- `child-session-link`
+- `run-started`
+- `run-usage-summary`
+- `assistant-chart-candidate`
+- `assistant-complete`
+- `error`
+- `heartbeat`
+- `tool-result-pending`
+- `tool-result-ready`
+- `tool-result-failed`
+- `research-activity`
 
-Events emitted during a chat run:
+## What the platform does next
 
-| Event Type | When |
-|------------|------|
-| `run.accepted` | Platform accepts the run request |
-| `run.started` | Relay connects to gateway |
-| `user-message` | User message recorded |
-| `assistant-token` | Streaming token from LLM |
-| `assistant-complete` | Full response assembled |
-| `assistant-chart` | Chart data extracted from response |
-| `tool-use` | Agent invokes a tool (browse, search, etc.) |
-| `tool-result-pending` | Tool running, artifact expected |
-| `tool-result-ready` | Tool completed, artifact available |
-| `tool-result-failed` | Tool failed |
-| `browser-event` | Browser session start/action/end |
-| `research-activity` | Research progress update |
-| `run.heartbeat` | Liveness ping |
-| `error` | Error from agent or relay |
+The platform transforms ingest events into durable stream events through `applyEliteRunIngestEvents` in `runs.ts`. That is the boundary between runtime callbacks and the product state the UI can replay, recover, and render.
 
-### Known Issue: SSE Truncation
+## Why the browser-events split exists
 
-The durable stream live subscription can miss the last event when it arrives close to `upToDate: true`. This means `assistant-complete` sometimes never reaches the client (19/20 events delivered, completion dropped). PR #768 implements a stale replay fallback that resets offset to `-1` on idle.
+Browser activity is not mixed into the main ingest path. It has a separate `/api/elite/browser-events` endpoint so browser telemetry can evolve independently from the core run ingest contract.
+
+<StatusNote date="2026-04-01" commit="b719cf5" />

@@ -1,0 +1,36 @@
+---
+title: Authentication
+description: Real user auth and agent callback auth surfaces used by BlockMind.
+---
+
+BlockMind does not offer general-purpose email and password auth. Human sign-in is narrower than the old docs claimed, and machine callbacks use a separate bearer-token path that exists specifically for the agent runtime.
+
+This distinction matters because user auth and runtime auth solve different problems. One gets a person into the product; the other lets a workspace call back into the platform with tightly scoped permission.
+
+## Human authentication
+
+- `emailAndPassword: { enabled: false }`
+- Social sign-in: Google only
+- Anonymous accounts can link on signup
+
+## Enabled Better Auth plugins
+
+- `anonymous`
+- `bearer`
+- `organization`
+
+## Custom auth fields
+
+- `isAnonymous`
+- `role`
+- `emailConsent`
+
+## Agent callback authentication
+
+Agent callbacks use bearer tokens with the `workspace:write` scope. That is the auth surface used by the runtime when it posts back into platform endpoints such as `/api/elite/ingest`.
+
+## Why this page exists
+
+The old docs blurred together user auth, social providers, and machine auth. The production surface is narrower and cleaner: Google for social sign-in, anonymous account linking where needed, and bearer tokens for agent callbacks.
+
+<StatusNote date="2026-04-01" commit="b719cf5" />

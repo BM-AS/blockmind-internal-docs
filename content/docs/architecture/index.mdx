@@ -1,37 +1,33 @@
 ---
-title: System Landscape
-description: High-level overview of all BlockMind systems and their relationships.
+title: Architecture guide
+description: Reading guide for the core technical boundaries inside BlockMind.
 ---
 
-## BlockMind System Landscape
+This section explains the technical boundaries that matter when you are changing or debugging BlockMind. Read it as a map: start with the platform and runtime pages to orient yourself, then move into the critical flows for chat, provisioning, credits, durable streams, and authentication.
 
-BlockMind consists of three primary systems:
+The important correction in this rewrite is that the most failure-prone pages now match production reality. The relay boundary is no longer described as an oRPC flow, the credit system is no longer described as model-tier billing, and provisioning now follows the real Inngest step order.
 
-- **BlockMind Platform** — TanStack Start web app on Vercel. Portfolio tracking, chat UI, real-time data sync.
-- **Elite Agent System** — One Fly Machine per user running an OpenClaw gateway. Per-user AI with persistent memory, tools, and browser access.
-- **Agent Infrastructure** — Inngest-driven provisioning, template distribution, machine pooling, health monitoring.
+<D2Diagram name="AgentInfraContainers" title="Support Plane Overview" />
 
-<D2Diagram name="SystemLandscape" title="System Landscape — All Systems" />
+## Recommended reading order
 
-### External Dependencies
+1. [Platform](/docs/architecture/platform) for the request surface and endpoint boundaries.
+2. [Elite runtime](/docs/architecture/elite-runtime) for where agent work actually runs.
+3. [Chat flow](/docs/architecture/chat-flow) for the relay, ingest, and browser event split.
+4. [Provisioning](/docs/architecture/provisioning) for workspace lifecycle creation.
+5. [Credits](/docs/architecture/credits) and [Durable streams](/docs/architecture/durable-streams) for the two shared cross-cutting systems.
+6. [Auth](/docs/architecture/auth) for the human and machine auth surfaces.
 
-| System | Purpose |
-|--------|---------|
-| PlanetScale | Postgres database (Drizzle ORM) |
-| Fly.io | Agent compute — one dedicated machine per user |
-| Vercel | Platform hosting + serverless functions |
-| Inngest | Durable workflow orchestration |
-| Electric SQL | Durable Streams — real-time SSE event transport |
-| Browserbase | Cloud browser sessions for agents |
-| Tigris S3 | Artifact storage (screenshots, files) |
-| Moralis | Blockchain/DeFi data provider |
-| AgentMail | Per-agent email addresses |
+## What each page answers
 
-### Drill Down
+| Page | Primary question |
+| --- | --- |
+| [Platform](/docs/architecture/platform) | Which endpoints and route types own Elite-facing traffic? |
+| [Elite runtime](/docs/architecture/elite-runtime) | What does the runtime do once work is handed off? |
+| [Chat flow](/docs/architecture/chat-flow) | Where does the relay send data, and how does the platform transform it? |
+| [Provisioning](/docs/architecture/provisioning) | In what order does a workspace become active, and how does failure compensation work? |
+| [Credits](/docs/architecture/credits) | How are actions priced, reserved, and settled? |
+| [Durable streams](/docs/architecture/durable-streams) | How do ingest events become replayable product state? |
+| [Auth](/docs/architecture/auth) | Which auth methods exist for users and agent callbacks? |
 
-- [Platform Internals](/docs/architecture/platform) — Web app, API, auth, credits, durable streams
-- [Elite Agent System](/docs/architecture/elite) — Per-user agent architecture
-- [Agent Infrastructure](/docs/architecture/infra) — Provisioning, templates, machine pool
-- [Chat Flow](/docs/architecture/chat-flow) — How messages travel from user to agent and back
-- [Provisioning Flow](/docs/architecture/provisioning-flow) — How a new agent is created
-- [Credit System](/docs/architecture/credit-flow) — Usage metering and billing
+<StatusNote date="2026-04-01" commit="b719cf5" />

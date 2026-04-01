@@ -1,0 +1,44 @@
+---
+title: Business model
+description: Product-level view of how BlockMind prices and charges work.
+---
+
+BlockMind charges for actions, not for model tiers. That matters because the product is selling outcomes such as chat, scans, briefs, and deep analysis, not exposing raw model selection as the billing unit.
+
+Under the hood, the system checks that a user has enough credits before work starts, reserves capacity for the run, and then settles to the actual cost or refunds the difference afterward. From the user's perspective, that means predictable gating up front and accurate charging at the end.
+
+## Action types
+
+| Action type | What it represents |
+| --- | --- |
+| `chat` | Standard interactive chat work |
+| `data_fetch` | Data retrieval work |
+| `portfolio_scan` | Portfolio scanning workflows |
+| `morning_brief` | Scheduled briefing output |
+| `analysis` | General analysis workflows |
+| `kol_analysis` | KOL-focused analysis |
+| `deep_dive` | Larger, more expensive deep research work |
+
+Each action type has two pricing controls:
+
+- `floor` is the minimum amount charged for that action.
+- `reserveCap` is the maximum amount the system is allowed to reserve before the run finishes.
+
+## Included monthly credits
+
+| Tier | Included credits |
+| --- | --- |
+| `free` | 30 |
+| `starter` | 275 |
+| `pro` | 990 |
+| `elite` | 3025 |
+| `elite-plus` | 10450 |
+
+## How charging behaves
+
+1. The platform calls `reserveCredits` before the action runs.
+2. The run executes.
+3. The platform calls `settleReservation` when the actual cost is known.
+4. Any unused reserved amount is returned through the settlement flow.
+
+That reserve-then-settle model is why the billing system can block obviously unaffordable work early without overcharging successful runs.

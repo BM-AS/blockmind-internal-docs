@@ -1,0 +1,51 @@
+---
+title: Durable streams
+description: How runtime callbacks become replayable product state after ingest.
+---
+
+Durable streams are the product-facing record of an Elite run. The runtime emits ingest events, but the platform turns those callbacks into durable stream events so the UI can recover state instead of depending on one fragile live connection.
+
+This is the layer that makes reconnects, refreshes, and long-running work sane. It separates raw callback delivery from the state model the product reads.
+
+## Source of truth
+
+The platform receives ingest events on `/api/elite/ingest` and transforms them through `applyEliteRunIngestEvents` in `runs.ts`. That transformation is what turns runtime callbacks into the durable stream events used by the product.
+
+## Ingest event types
+
+The ingest contract includes:
+
+- `upstream`
+- `child-session-link`
+- `run-started`
+- `run-usage-summary`
+- `assistant-chart-candidate`
+- `assistant-complete`
+- `error`
+- `heartbeat`
+- `tool-result-pending`
+- `tool-result-ready`
+- `tool-result-failed`
+- `research-activity`
+
+## Replay and recovery
+
+Durability matters because chat runs are not always short. When a client reconnects, the platform can replay the durable event history for that run instead of pretending the run is stateless. That is especially important while a run is in an active state:
+
+- `starting`
+- `running`
+- `settling`
+
+Terminal states are:
+
+- `completed`
+- `failed`
+- `timed_out`
+
+## How collections should be understood
+
+The durable stream is the canonical event log. Collection-style views sit on top of it so the UI can read the specific slice of run state it needs without coupling itself to raw relay payloads.
+
+In practice, that means the platform owns normalization and recovery logic, while the UI consumes structured, replayable state.
+
+<StatusNote date="2026-04-01" commit="b719cf5" />

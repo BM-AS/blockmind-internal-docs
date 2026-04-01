@@ -2,13 +2,13 @@
   "title": "BlockMind Internal Docs",
   "pages": [
     "index",
+    "---Overview---",
+    "overview",
     "---Architecture---",
     "architecture",
-    "---Systems---",
-    "systems",
+    "---Operations---",
+    "operations",
     "---Decisions---",
-    "decisions",
-    "---Agents---",
-    "agents"
+    "decisions"
   ]
 }

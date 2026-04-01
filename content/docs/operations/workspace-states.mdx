@@ -1,0 +1,32 @@
+---
+title: Workspace states
+description: Canonical workspace lifecycle enum used by the platform.
+---
+
+Workspace states tell you whether a runtime is being created, is usable, is unhealthy, or is gone. This is the operational state machine behind provisioning, wake/suspend behavior, and incident handling.
+
+The important thing to preserve is the exact enum and its ordering. Dashboards and automation should key off these values instead of inventing alternate labels.
+
+## Canonical enum
+
+`queued` → `provisioning` → `seeding` → `active` → `suspended` | `degraded` | `failed` | `destroyed`
+
+## State reference
+
+| State | Operational meaning |
+| --- | --- |
+| `queued` | The workspace exists as requested work but has not started provisioning yet |
+| `provisioning` | The provisioning workflow is actively creating runtime resources |
+| `seeding` | The workspace is being seeded with the files and configuration it needs |
+| `active` | The workspace is available for normal runtime use |
+| `suspended` | The workspace is not currently active but can return to service later |
+| `degraded` | The workspace exists but is not fully healthy |
+| `failed` | The workspace hit a failure state |
+| `destroyed` | The workspace has been torn down |
+
+## Where this shows up
+
+- [Provisioning](/docs/architecture/provisioning) moves a workspace from `queued` to `provisioning`, then to `active`.
+- Runtime and health workflows can later move a workspace into `suspended`, `degraded`, `failed`, or `destroyed`.
+
+<StatusNote date="2026-04-01" commit="b719cf5" />

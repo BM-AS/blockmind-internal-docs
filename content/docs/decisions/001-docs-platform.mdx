@@ -1,0 +1,32 @@
+---
+title: "001: Internal Documentation Platform"
+description: Decision to use Fumadocs and Structurizr DSL for internal documentation.
+---
+
+## Context
+
+BlockMind needed a living documentation system for architecture, decisions, and system docs. The existing `blockmind-kb` repo was static markdown with no interactive diagrams or structured navigation.
+
+## Decision
+
+Use **Fumadocs on Vercel** with **Structurizr C4 DSL** as the architecture model source of truth, exported to **D2 SVGs** at build time.
+
+## Alternatives considered
+
+| Option | Rejected because |
+| --- | --- |
+| Structurizr Lite on Mac Mini | It would introduce an unnecessary security and hosting surface |
+| Vercel Deployment Protection | It was too expensive for the team size |
+| Platform DB auth coupling | It would create an unnecessary dependency on the main product |
+| D2 only without Structurizr | It would lose the higher-level C4 model structure |
+| Mermaid only | It would lose the exported SVG flow and layout quality the team wanted |
+
+## Authentication
+
+Put Cloudflare Access in front of `internal.blockmind.app` using the free tier and email OTP. That keeps access control out of the app itself.
+
+## Consequences
+
+- Architecture updates require DSL changes, D2 export, and committed SVGs.
+- The docs remain lightweight to host because there is no live Structurizr server.
+- The site supports both durable narrative docs and exported diagrams in one place.

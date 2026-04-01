@@ -1,0 +1,37 @@
+---
+title: Chat run states
+description: Canonical run lifecycle enum used for Elite chat execution.
+---
+
+Chat run states tell you whether a run is still in flight or has reached a terminal outcome. This is the operational truth the UI and backend should use when they need to reason about liveness, recovery, or completion.
+
+The production enum is small on purpose. If code needs to know whether a run is still active, it should use the defined active states rather than inferring from timestamps or partial event history.
+
+## Canonical enum
+
+`starting` → `running` → `settling` → `completed` | `failed` | `timed_out`
+
+## Active states
+
+- `starting`
+- `running`
+- `settling`
+
+## Terminal states
+
+- `completed`
+- `failed`
+- `timed_out`
+
+## State reference
+
+| State | Operational meaning |
+| --- | --- |
+| `starting` | The run has been accepted and is entering execution |
+| `running` | The run is actively executing |
+| `settling` | The run has finished core execution and is reconciling final state |
+| `completed` | The run finished successfully |
+| `failed` | The run ended in failure |
+| `timed_out` | The run exceeded its allowed execution window |
+
+<StatusNote date="2026-04-01" commit="b719cf5" />

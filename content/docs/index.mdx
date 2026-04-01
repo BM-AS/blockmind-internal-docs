@@ -1,13 +1,28 @@
 ---
 title: BlockMind Internal Documentation
-description: Architecture, systems, decisions, and agent documentation for the BlockMind team.
+description: Canonical internal reference for how BlockMind works today, from executive summary to engineering detail.
 ---
 
-Welcome to BlockMind's internal documentation.
+BlockMind has three layers that matter in practice: the product surface users touch, the Elite runtime that does the work, and the operational workflows that keep workspaces healthy. This site explains those layers in that order so non-engineers can stop early and engineers can keep drilling down.
 
-## Sections
+The goal is progressive disclosure. Each page starts with the shortest truthful explanation first, then adds the implementation detail needed to debug, extend, or review the system.
 
-- **[Architecture](/docs/architecture)** — C4 architecture diagrams and system overviews
-- **[Systems](/docs/systems)** — Detailed system documentation and runbooks
-- **[Decisions](/docs/decisions)** — Architecture Decision Records (ADRs)
-- **[Agents](/docs/agents)** — Agent infrastructure documentation
+## Choose a reading path
+
+### Executive track
+
+- [BlockMind in 2 minutes](/docs/overview)
+- [What Elite is](/docs/overview/elite)
+- [Business model](/docs/overview/business-model)
+
+### Engineering track
+
+- [Architecture guide](/docs/architecture)
+- [Operations guide](/docs/operations)
+- [Architecture decisions](/docs/decisions)
+
+## What changed
+
+- The navigation now matches the content that actually exists.
+- The relay boundary, credit system, and provisioning flow have been rewritten to match the verified production implementation.
+- Pages are organized so the simple explanation comes first and the low-level mechanics come after.

@@ -1,0 +1,43 @@
+---
+title: Elite runtime
+description: Runtime-side view of how Elite work executes after the platform hands it off.
+---
+
+The Elite runtime is where agent work actually happens. The platform starts the work, but the runtime owns execution, tool use, progress emission, and the final callback stream that returns state to the platform.
+
+If the platform is the control plane, the runtime is the execution plane. This page stays at that boundary and leaves pricing, provisioning, and auth policy to the dedicated pages that own them.
+
+<D2Diagram name="EliteContainers" title="Elite Runtime Container View" />
+
+## Responsibilities
+
+- Execute the run after the platform accepts user work.
+- Emit structured callbacks to the platform through the ingest path.
+- Send browser activity over a separate browser-events channel.
+- Produce artifacts through a separate artifact endpoint instead of mixing them into the main callback path.
+
+## Runtime-to-platform contract
+
+The relay launches with:
+
+- `ingestPath: '/api/elite/ingest'`
+- a separate `browserEventsUrl`
+- a separate artifact endpoint
+
+That split is deliberate. It keeps the main ingest channel focused on run events while browser-specific activity and artifact delivery travel through their own surfaces.
+
+## Lifecycle in practice
+
+1. The platform accepts a chat request on `/api/elite/chat`.
+2. The runtime starts executing the run.
+3. The relay emits ingest events, browser events, and artifact callbacks on the correct channels.
+4. The platform transforms ingest callbacks into durable stream events for the product experience.
+
+## Related operational state
+
+The runtime only becomes useful after the provisioning workflow moves a workspace into `active`. Later operational transitions such as `suspended`, `degraded`, and `failed` affect whether the platform can hand new work to the runtime cleanly.
+
+- Read [Provisioning](/docs/architecture/provisioning) for creation order.
+- Read [Workspace states](/docs/operations/workspace-states) for the operational lifecycle.
+
+<StatusNote date="2026-04-01" commit="b719cf5" />

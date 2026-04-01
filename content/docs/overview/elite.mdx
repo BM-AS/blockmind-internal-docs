@@ -1,0 +1,27 @@
+---
+title: What Elite is
+description: Product-level explanation of the Elite experience and why it exists.
+---
+
+Elite is the part of BlockMind that feels like a persistent operator instead of a one-shot chatbot. A user starts from the platform, but the real work happens in that user's runtime and workspace, which gives the system continuity across sessions and tasks.
+
+From a product point of view, the promise is simple: BlockMind is not just answering questions, it is running work on the user's behalf and streaming progress back into the product.
+
+## Why it exists
+
+- **Continuity**: a user's work does not reset every time they open chat.
+- **Operational depth**: the runtime can execute tools, produce artifacts, and report progress as the work unfolds.
+- **Clear system ownership**: the platform coordinates, the runtime executes, and the operating workflows provision and maintain the environment.
+
+## What the user experiences
+
+1. The user starts a chat or task from the platform.
+2. The platform routes that work into the Elite runtime.
+3. The runtime emits structured progress and completion events back to the platform.
+4. The UI shows live progress rather than waiting for one big final response.
+
+## Where to go next
+
+- Read [Business model](/docs/overview/business-model) for how work is charged.
+- Read [Chat flow](/docs/architecture/chat-flow) for the exact relay and ingest boundary.
+- Read [Provisioning](/docs/architecture/provisioning) for how a workspace becomes usable.

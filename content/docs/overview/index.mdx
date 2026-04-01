@@ -1,0 +1,26 @@
+---
+title: BlockMind in 2 minutes
+description: Plain-language summary of the product, the runtime, and the operating model.
+---
+
+BlockMind is a product with a persistent agent runtime behind it. The web platform handles user-facing workflows, the Elite runtime does long-running agent work, and the operating plane provisions and maintains each workspace. If you only need the shape of the system, this page is enough.
+
+The rest of the docs go deeper in a predictable way: overview pages explain the product decisions, architecture pages explain implementation boundaries, and operations pages explain the state machines and lifecycle truth.
+
+<D2Diagram name="SystemLandscape" title="BlockMind System Landscape" />
+
+## The short version
+
+- **Platform** is the entry point. It owns the user-facing experience and the endpoints that coordinate agent work.
+- **Elite runtime** is where the agent actually runs. It receives work from the platform, performs tool use, and emits structured events back.
+- **Operations workflows** provision workspaces, move them through lifecycle states, and recover from failures.
+
+## Two ways to read this site
+
+### If you need the business story
+
+Start with [What Elite is](/docs/overview/elite) and [Business model](/docs/overview/business-model). Those pages explain what users are buying, what they experience, and why the pricing model looks the way it does.
+
+### If you need the engineering truth
+
+Go to the [Architecture guide](/docs/architecture). It starts with the system boundaries, then moves into the relay boundary, provisioning order, credit reservation and settlement, durable streams, and authentication.
