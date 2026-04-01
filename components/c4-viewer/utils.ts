@@ -30,63 +30,73 @@ export function getCollapsedDefaults(view: ViewDefinition): Set<Id> {
   );
 }
 
-export function getOwnerId(model: C4Model, elementId: Id): Id | undefined {
-  return model.containment.find(
-    (containment) => containment.childId === elementId && containment.mode === 'owns',
-  )?.parentId;
+export function getViewDetailDepth(view: ViewDefinition): number {
+  const childrenOf = getPlacementChildren(view.placements);
+  const depthByPlacementId = new Map<Id, number>();
+
+  const getDepth = (placementId: Id): number => {
+    const cachedDepth = depthByPlacementId.get(placementId);
+    if (cachedDepth !== undefined) {
+      return cachedDepth;
+    }
+
+    const childPlacements = childrenOf.get(placementId) ?? [];
+    const depth =
+      childPlacements.length === 0
+        ? 0
+        : 1 +
+          Math.max(
+            ...childPlacements.map((child) => getDepth(child.placementId)),
+          );
+
+    depthByPlacementId.set(placementId, depth);
+
+    return depth;
+  };
+
+  return Math.max(...view.placements.map((placement) => getDepth(placement.placementId)));
 }
 
-export function hasOwnedChildren(model: C4Model, elementId: Id): boolean {
-  return model.containment.some(
-    (containment) =>
-      containment.parentId === elementId && containment.mode === 'owns',
-  );
-}
-
-export function getPreferredViewId(
+export function getDeeperViewId(
   model: C4Model,
   elementId: Id,
-  currentViewId?: Id,
+  currentViewId: Id,
+  currentDetailDepth: number,
 ): Id | undefined {
   const views = Object.values(model.views).filter(
-    (view) => view.rootElementId === elementId && view.id !== currentViewId,
+    (view) =>
+      view.rootElementId === elementId &&
+      view.id !== currentViewId &&
+      getViewDetailDepth(view) > currentDetailDepth,
   );
 
   return (
     views.find((view) => view.perspective === 'structure')?.id ??
-    views[0]?.id
+    views.sort(
+      (left, right) =>
+        getViewDetailDepth(left) - getViewDetailDepth(right) ||
+        left.name.localeCompare(right.name),
+    )[0]?.id
   );
 }
 
 export function buildBreadcrumb(
   model: C4Model,
-  currentViewId: Id,
-): Array<{ elementId: Id; viewId: Id; label: string }> {
-  const currentView = model.views[currentViewId];
-  const breadcrumb: Array<{ elementId: Id; viewId: Id; label: string }> = [];
-  const visited = new Set<Id>();
-
-  let currentElementId: Id | undefined = currentView?.rootElementId;
-  while (currentElementId && !visited.has(currentElementId)) {
-    visited.add(currentElementId);
-    const element = model.elements[currentElementId];
-    const viewId =
-      currentElementId === currentView.rootElementId
-        ? currentViewId
-        : getPreferredViewId(model, currentElementId) ?? currentViewId;
-
-    if (element) {
-      breadcrumb.unshift({
-        elementId: currentElementId,
-        viewId,
-        label: element.name,
-      });
+  path: Id[],
+): Array<{ viewId: Id; label: string }> {
+  return path.flatMap((viewId) => {
+    const view = model.views[viewId];
+    if (!view) {
+      return [];
     }
 
-    currentElementId = getOwnerId(model, currentElementId);
-  }
-
-  return breadcrumb;
+    return [
+      {
+        viewId,
+        label: view.name,
+      },
+    ];
+  });
 }
 
 export function getPlacementChildren(
@@ -105,8 +115,4 @@ export function getPlacementChildren(
   }
 
   return children;
-}
-
-export function isExternalElement(tags?: string[]): boolean {
-  return tags?.includes('external') ?? false;
 }

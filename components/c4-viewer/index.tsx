@@ -56,6 +56,7 @@ interface C4DiagramProps {
 
 interface DiagramState {
   viewId: Id;
+  path: Id[];
   collapsedPlacements: Set<Id>;
   activePerspective: ViewPerspective;
 }
@@ -64,6 +65,7 @@ type DiagramAction =
   | {
       type: 'NAVIGATE';
       viewId: Id;
+      path: Id[];
       perspective: ViewPerspective;
       collapsedDefaults: Set<Id>;
     }
@@ -75,6 +77,7 @@ function reducer(state: DiagramState, action: DiagramAction): DiagramState {
     case 'NAVIGATE':
       return {
         viewId: action.viewId,
+        path: action.path,
         collapsedPlacements: action.collapsedDefaults,
         activePerspective: action.perspective,
       };
@@ -103,19 +106,25 @@ export function C4Diagram({ viewId, onViewChange }: C4DiagramProps) {
   const initialView = model.views[viewId];
   const [state, dispatch] = useReducer(reducer, {
     viewId,
+    path: [viewId],
     collapsedPlacements: getCollapsedDefaults(initialView),
     activePerspective: initialView.perspective,
   });
 
   useEffect(() => {
+    if (viewId === state.viewId) {
+      return;
+    }
+
     const nextView = model.views[viewId];
     dispatch({
       type: 'NAVIGATE',
       viewId,
+      path: [viewId],
       perspective: nextView.perspective,
       collapsedDefaults: getCollapsedDefaults(nextView),
     });
-  }, [viewId]);
+  }, [state.viewId, viewId]);
 
   const viewDefinition = model.views[state.viewId];
   const projection = useMemo(
@@ -123,8 +132,9 @@ export function C4Diagram({ viewId, onViewChange }: C4DiagramProps) {
       projectView(model, state.viewId, {
         collapsedPlacements: state.collapsedPlacements,
         activePerspective: state.activePerspective,
+        path: state.path,
       }),
-    [state.activePerspective, state.collapsedPlacements, state.viewId],
+    [state.activePerspective, state.collapsedPlacements, state.path, state.viewId],
   );
 
   const onNodeDoubleClick = useCallback(
@@ -139,12 +149,13 @@ export function C4Diagram({ viewId, onViewChange }: C4DiagramProps) {
       dispatch({
         type: 'NAVIGATE',
         viewId: nextViewId,
+        path: [...state.path, nextViewId],
         perspective: nextView.perspective,
         collapsedDefaults: getCollapsedDefaults(nextView),
       });
       onViewChange?.(nextViewId);
     },
-    [onViewChange],
+    [onViewChange, state.path],
   );
 
   const onNodeClick = useCallback(
@@ -205,6 +216,7 @@ export function C4Diagram({ viewId, onViewChange }: C4DiagramProps) {
                   dispatch({
                     type: 'NAVIGATE',
                     viewId: crumb.viewId,
+                    path: state.path.slice(0, index + 1),
                     perspective: nextView.perspective,
                     collapsedDefaults: getCollapsedDefaults(nextView),
                   });

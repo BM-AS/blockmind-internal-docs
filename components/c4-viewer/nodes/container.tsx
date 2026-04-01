@@ -2,10 +2,14 @@
 
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 import { memo } from 'react';
-import type { C4NodeData } from '../projection';
+import type { C4FlowNode } from '../projection';
 
-function C4ContainerNodeComponent({ data }: NodeProps) {
-  const nodeData = data as unknown as C4NodeData;
+function C4ContainerNodeComponent({
+  data,
+  sourcePosition = Position.Right,
+  targetPosition = Position.Left,
+}: NodeProps<C4FlowNode<'c4-container'>>) {
+  const nodeData = data;
   const borderClass = nodeData.isReference
     ? 'border-dashed border-zinc-600'
     : 'border-zinc-700';
@@ -18,12 +22,12 @@ function C4ContainerNodeComponent({ data }: NodeProps) {
     >
       <Handle
         type="target"
-        position={Position.Left}
+        position={targetPosition}
         className="!h-2 !w-2 !border-0 !bg-transparent !opacity-0"
       />
       <Handle
         type="source"
-        position={Position.Right}
+        position={sourcePosition}
         className="!h-2 !w-2 !border-0 !bg-transparent !opacity-0"
       />
       <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(39,39,42,0.96),rgba(17,24,39,0.86))]" />

@@ -2,10 +2,14 @@
 
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 import { memo } from 'react';
-import type { C4NodeData } from '../projection';
+import type { C4FlowNode } from '../projection';
 
-function C4PersonNodeComponent({ data }: NodeProps) {
-  const nodeData = data as unknown as C4NodeData;
+function C4PersonNodeComponent({
+  data,
+  sourcePosition = Position.Right,
+  targetPosition = Position.Left,
+}: NodeProps<C4FlowNode<'c4-person'>>) {
+  const nodeData = data;
 
   return (
     <div
@@ -14,12 +18,12 @@ function C4PersonNodeComponent({ data }: NodeProps) {
     >
       <Handle
         type="target"
-        position={Position.Left}
+        position={targetPosition}
         className="!h-2 !w-2 !border-0 !bg-transparent !opacity-0"
       />
       <Handle
         type="source"
-        position={Position.Right}
+        position={sourcePosition}
         className="!h-2 !w-2 !border-0 !bg-transparent !opacity-0"
       />
       <div className="flex h-full items-center gap-3">
